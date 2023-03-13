@@ -6,14 +6,14 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
 
-class MainActivity : AppCompatActivity() {
+class Login : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_login)
 
-        val register = findViewById<Button>(R.id.register)
-        register.setOnClickListener {
-            goToActivity(AddFestivals::class.java)
+        val login = findViewById<Button>(R.id.register)
+        login.setOnClickListener {
+            goToActivity(Lineup::class.java)
         }
     }
 
