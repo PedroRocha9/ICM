@@ -33,12 +33,12 @@
         android:layout_marginLeft="40dp"
         android:layout_marginTop="428dp"
         android:layout_marginRight="40dp"
-        android:backgroundTint="@color/text"
         android:hint="Username"
         android:inputType="text"
         android:selectAllOnFocus="true"
         android:textColor="@color/text"
         android:textColorHint="@color/text"
+        android:backgroundTint="@color/text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -114,4 +114,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/alreadyHaveAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="I already have an account - Sign in"
+        android:textColor="@color/main"
+        app:layout_constraintBottom_toTopOf="@+id/textView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/register"
+        android:clickable="true"
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
