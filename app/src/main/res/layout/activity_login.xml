@@ -16,7 +16,7 @@
         android:layout_marginBottom="64dp"
         android:backgroundTint="@color/main"
         android:enabled="false"
-        android:text="LOGIN"
+        android:text="@string/login"
         android:textColor="@color/text"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -34,14 +34,16 @@
         android:layout_marginTop="428dp"
         android:layout_marginRight="40dp"
         android:backgroundTint="@color/text"
-        android:hint="Username"
+        android:hint="@string/usernameLogin"
         android:inputType="text"
+        android:minHeight="48dp"
         android:selectAllOnFocus="true"
         android:textColor="@color/text"
         android:textColorHint="@color/text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:autofillHints="" />
 
     <EditText
         android:id="@+id/password"
@@ -55,12 +57,14 @@
         android:imeActionLabel="@string/action_sign_in_short"
         android:imeOptions="actionDone"
         android:inputType="textPassword"
+        android:minHeight="48dp"
         android:selectAllOnFocus="true"
         android:textColor="@color/text"
         android:textColorHint="@color/text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username" />
+        app:layout_constraintTop_toBottomOf="@+id/username"
+        android:autofillHints="" />
 
     <ProgressBar
         android:id="@+id/loading"
@@ -81,7 +85,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:text="UrFest"
+        android:text="@string/urfestLogin"
         android:textAlignment="center"
         android:textColor="@color/text"
         android:textSize="48sp"
@@ -105,11 +109,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="27dp"
         android:clickable="true"
-        android:text="I don't have an account yet - Register"
-        android:textColor="@color/main"
+        android:minHeight="48dp"
+        android:text="@string/i_don_t_have_an_account_yet_register"
+        android:textColor="@color/text"
         app:layout_constraintBottom_toTopOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/register"
-        app:layout_constraintVertical_bias="0.138" />
+        app:layout_constraintVertical_bias="0.138"
+        android:focusable="true" />
 </androidx.constraintlayout.widget.ConstraintLayout>

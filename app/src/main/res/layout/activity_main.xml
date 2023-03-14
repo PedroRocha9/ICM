@@ -16,7 +16,7 @@
         android:layout_marginBottom="64dp"
         android:backgroundTint="@color/main"
         android:enabled="false"
-        android:text="REGISTER"
+        android:text="@string/register"
         android:textColor="@color/text"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -33,15 +33,17 @@
         android:layout_marginLeft="40dp"
         android:layout_marginTop="428dp"
         android:layout_marginRight="40dp"
-        android:hint="Username"
+        android:backgroundTint="@color/text"
+        android:hint="@string/username"
         android:inputType="text"
+        android:minHeight="48dp"
         android:selectAllOnFocus="true"
         android:textColor="@color/text"
         android:textColorHint="@color/text"
-        android:backgroundTint="@color/text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:autofillHints="" />
 
     <EditText
         android:id="@+id/email"
@@ -52,12 +54,14 @@
         android:backgroundTint="@color/text"
         android:hint="@string/prompt_email"
         android:inputType="textEmailAddress"
+        android:minHeight="48dp"
         android:selectAllOnFocus="true"
         android:textColor="@color/text"
         android:textColorHint="@color/text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username" />
+        app:layout_constraintTop_toBottomOf="@+id/username"
+        android:autofillHints="" />
 
     <EditText
         android:id="@+id/password"
@@ -71,12 +75,14 @@
         android:imeActionLabel="@string/action_sign_in_short"
         android:imeOptions="actionDone"
         android:inputType="textPassword"
+        android:minHeight="48dp"
         android:selectAllOnFocus="true"
         android:textColor="@color/text"
         android:textColorHint="@color/text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email" />
+        app:layout_constraintTop_toBottomOf="@+id/email"
+        android:autofillHints="" />
 
     <ProgressBar
         android:id="@+id/loading"
@@ -97,7 +103,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:text="UrFest"
+        android:text="@string/urfest"
         android:textAlignment="center"
         android:textColor="@color/text"
         android:textSize="48sp"
@@ -119,13 +125,14 @@
         android:id="@+id/alreadyHaveAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="I already have an account - Sign in"
-        android:textColor="@color/main"
+        android:clickable="true"
+        android:focusable="true"
+        android:minHeight="48dp"
+        android:text="@string/i_already_have_an_account_sign_in"
+        android:textColor="@color/text"
         app:layout_constraintBottom_toTopOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/register"
-        android:clickable="true"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/register" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

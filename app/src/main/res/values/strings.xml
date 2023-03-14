@@ -9,4 +9,15 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="register">REGISTER</string>
+    <string name="username">Username</string>
+    <string name="urfest">UrFest</string>
+    <string name="i_already_have_an_account_sign_in">I already have an account - Sign in</string>
+    <string name="login">LOGIN</string>
+    <string name="usernameLogin">Username</string>
+    <string name="urfestLogin">UrFest</string>
+    <string name="i_don_t_have_an_account_yet_register">I don\'t have an account yet - Register</string>
+    <string name="add_a_festival_to_your_profile">Add a Festival to your Profile</string>
+    <string name="meo_sudoeste">Meo Sudoeste</string>
+    <string name="odemira_portugal">Odemira, Portugal</string>
 </resources>
