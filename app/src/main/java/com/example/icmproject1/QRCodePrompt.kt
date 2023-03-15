@@ -22,13 +22,17 @@ class QRCodePrompt : AppCompatActivity() {
         }
 
         val profile = findViewById<ImageView>(R.id.profile)
-        val findBuddy = findViewById<ImageView>(R.id.findBuddy)
         val lineup = findViewById<ImageView>(R.id.lineup)
+        val findPartner = findViewById<ImageView>(R.id.findPartner)
+        val findBuddy = findViewById<ImageView>(R.id.findBuddy)
         profile.setOnClickListener {
             goToActivity(Profile::class.java)
         }
         lineup.setOnClickListener {
             goToActivity(Lineup::class.java)
+        }
+        findPartner.setOnClickListener {
+            goToActivity(NaughtyPermission::class.java)
         }
         findBuddy.setOnClickListener {
             goToActivity(FindUrBuddies::class.java)

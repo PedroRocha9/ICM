@@ -11,17 +11,21 @@ class Profile : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
-        val findBuddy = findViewById<ImageView>(R.id.findBuddy)
         val qrcode = findViewById<ImageView>(R.id.qrcode)
         val lineup = findViewById<ImageView>(R.id.lineup)
+        val findPartner = findViewById<ImageView>(R.id.findPartner)
+        val findBuddy = findViewById<ImageView>(R.id.findBuddy)
         lineup.setOnClickListener {
             goToActivity(Lineup::class.java)
         }
-        findBuddy.setOnClickListener {
-            goToActivity(FindUrBuddies::class.java)
-        }
         qrcode.setOnClickListener {
             goToActivity(QRCodePrompt::class.java)
+        }
+        findPartner.setOnClickListener {
+            goToActivity(NaughtyPermission::class.java)
+        }
+        findBuddy.setOnClickListener {
+            goToActivity(FindUrBuddies::class.java)
         }
     }
 

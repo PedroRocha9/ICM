@@ -14,6 +14,7 @@ class FindUrBuddies : AppCompatActivity() {
         val profile = findViewById<ImageView>(R.id.profile)
         val qrcode = findViewById<ImageView>(R.id.qrcode)
         val lineup = findViewById<ImageView>(R.id.lineup)
+        val findPartner = findViewById<ImageView>(R.id.findPartner)
         profile.setOnClickListener {
             goToActivity(Profile::class.java)
         }
@@ -22,6 +23,9 @@ class FindUrBuddies : AppCompatActivity() {
         }
         qrcode.setOnClickListener {
             goToActivity(QRCodePrompt::class.java)
+        }
+        findPartner.setOnClickListener {
+            goToActivity(NaughtyPermission::class.java)
         }
     }
 

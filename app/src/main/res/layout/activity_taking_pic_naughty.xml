@@ -66,7 +66,7 @@
             app:srcCompat="@drawable/qr_code_white" />
 
         <ImageView
-            android:id="@+id/find_partner"
+            android:id="@+id/findPartner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -85,7 +85,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@drawable/mw_1280" />
 
     <TextView
         android:id="@+id/textView26"

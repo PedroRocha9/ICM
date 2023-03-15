@@ -63,7 +63,7 @@
             app:srcCompat="@drawable/qr_code_white" />
 
         <ImageView
-            android:id="@+id/find_partner"
+            android:id="@+id/findPartner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
