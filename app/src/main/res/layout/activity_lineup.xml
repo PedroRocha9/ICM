@@ -26,7 +26,7 @@
         android:layout_height="0dp"
         android:padding="5dp"
         app:layout_constraintBottom_toBottomOf="@+id/page_title"
-        app:layout_constraintEnd_toEndOf="@+id/page_title"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/page_title"
         app:srcCompat="@drawable/user_white" />
 
@@ -106,10 +106,11 @@
             app:srcCompat="@drawable/microphone_white" />
 
         <ImageView
-            android:id="@+id/find_buddy"
+            android:id="@+id/findBuddy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:clickable="true"
             app:srcCompat="@drawable/map_white" />
 
         <ImageView
@@ -117,6 +118,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:clickable="true"
             app:srcCompat="@drawable/qr_code_white" />
 
         <ImageView
@@ -124,6 +126,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:clickable="true"
             app:srcCompat="@drawable/tongue_out_white" />
 
     </LinearLayout>
@@ -133,8 +136,7 @@
         android:layout_width="409dp"
         android:layout_height="0dp"
         android:orientation="vertical"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
+        android:padding="20dp"
         app:layout_constraintBottom_toTopOf="@id/bottom_menu"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

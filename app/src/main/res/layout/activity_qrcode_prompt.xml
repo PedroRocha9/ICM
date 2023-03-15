@@ -26,7 +26,7 @@
         android:layout_height="0dp"
         android:padding="5dp"
         app:layout_constraintBottom_toBottomOf="@+id/page_title"
-        app:layout_constraintEnd_toEndOf="@+id/page_title"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/page_title"
         app:srcCompat="@drawable/user_white" />
 
@@ -49,7 +49,7 @@
             app:srcCompat="@drawable/microphone_white" />
 
         <ImageView
-            android:id="@+id/find_buddy"
+            android:id="@+id/findBuddy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -73,7 +73,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/showQRCode"
         android:layout_width="250dp"
         android:layout_height="250dp"
         android:layout_marginTop="28dp"
@@ -93,9 +93,9 @@
         android:layout_height="wrap_content"
         android:text="To pay or let someone add U as a buddy"
         android:textColor="@color/text"
-        app:layout_constraintEnd_toEndOf="@+id/button"
-        app:layout_constraintStart_toStartOf="@+id/button"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintEnd_toEndOf="@+id/showQRCode"
+        app:layout_constraintStart_toStartOf="@+id/showQRCode"
+        app:layout_constraintTop_toBottomOf="@+id/showQRCode" />
 
     <TextView
         android:id="@+id/textView22"
@@ -103,13 +103,13 @@
         android:layout_height="wrap_content"
         android:text="Add someone as Ur buddy"
         android:textColor="@color/text"
-        app:layout_constraintEnd_toEndOf="@+id/button3"
+        app:layout_constraintEnd_toEndOf="@+id/scanQRCode"
         app:layout_constraintHorizontal_bias="0.505"
-        app:layout_constraintStart_toStartOf="@+id/button3"
-        app:layout_constraintTop_toBottomOf="@+id/button3" />
+        app:layout_constraintStart_toStartOf="@+id/scanQRCode"
+        app:layout_constraintTop_toBottomOf="@+id/scanQRCode" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/scanQRCode"
         android:layout_width="250dp"
         android:layout_height="250dp"
         android:layout_marginTop="12dp"
@@ -118,9 +118,9 @@
         android:textAllCaps="false"
         android:textColor="@color/text"
         android:textSize="48sp"
-        app:layout_constraintEnd_toEndOf="@+id/button"
+        app:layout_constraintEnd_toEndOf="@+id/showQRCode"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/button"
+        app:layout_constraintStart_toStartOf="@+id/showQRCode"
         app:layout_constraintTop_toBottomOf="@+id/textView19" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

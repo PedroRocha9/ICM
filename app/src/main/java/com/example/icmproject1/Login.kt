@@ -11,7 +11,7 @@ class Login : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val login = findViewById<Button>(R.id.register)
+        val login = findViewById<Button>(R.id.loginButton)
         login.setOnClickListener {
             goToActivity(Lineup::class.java)
         }
