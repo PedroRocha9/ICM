@@ -204,8 +204,9 @@
             android:id="@+id/addFestival"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#2A7C52"
-            android:text="Add another Festival" />
+            android:backgroundTint="@color/main_darker"
+            android:text="Add another Festival"
+            android:textColor="@color/text" />
     </LinearLayout>
 
     <TextView

@@ -30,52 +30,6 @@
         app:layout_constraintTop_toTopOf="@+id/page_title"
         app:srcCompat="@drawable/user_white" />
 
-    <LinearLayout
-        android:id="@+id/bottom_menu"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:background="@color/main"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <ImageView
-            android:id="@+id/lineup"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-
-            app:srcCompat="@drawable/microphone_white" />
-
-        <ImageView
-            android:id="@+id/findBuddy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:clickable="true"
-            app:srcCompat="@drawable/map_white" />
-
-        <ImageView
-            android:id="@+id/qrcode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:clickable="true"
-            app:srcCompat="@drawable/qr_code_white" />
-
-        <ImageView
-            android:id="@+id/findPartner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:alpha="0.5"
-            android:clickable="true"
-            app:srcCompat="@drawable/tongue_out_white" />
-
-    </LinearLayout>
-
     <TextView
         android:id="@+id/textView21"
         android:layout_width="wrap_content"

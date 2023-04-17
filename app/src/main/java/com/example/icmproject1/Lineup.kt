@@ -6,38 +6,46 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.Fragment
+import com.example.icmproject1.databinding.ActivityLineupBinding
+import com.example.icmproject1.databinding.ActivityMainBinding
 
 class Lineup : AppCompatActivity() {
+    private lateinit var binding: ActivityLineupBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_lineup)
+        binding = ActivityLineupBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        replaceFragment(LineupFragment())
 
-        val profile = findViewById<ImageView>(R.id.profile)
-        val qrcode = findViewById<ImageView>(R.id.qrcode)
-        val findPartner = findViewById<ImageView>(R.id.findPartner)
-        val findBuddy = findViewById<ImageView>(R.id.findBuddy)
-        profile.setOnClickListener {
-            goToActivity(Profile::class.java)
-        }
-        qrcode.setOnClickListener {
-            goToActivity(QRCodePrompt::class.java)
-        }
-        findPartner.setOnClickListener {
-            goToActivity(NaughtyPermission::class.java)
-        }
-        findBuddy.setOnClickListener {
-            goToActivity(FindUrBuddies::class.java)
+        binding.bottomNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.findPartner -> {
+                    replaceFragment(FindPartnerFragment())
+                    true
+                }
+                R.id.lineup -> {
+                    replaceFragment(LineupFragment())
+                    true
+                }
+                R.id.qrcode -> {
+                    replaceFragment(QRCodeFragment())
+                    true
+                }
+                R.id.findBuddy -> {
+                    replaceFragment(FindBuddyFragment())
+                    true
+                }
+                else -> false
+            }
         }
     }
 
-    private val activityLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        // do something if returning to this activity
-    }
-
-    private fun goToActivity(activity: Class<*>) {
-        val intent = Intent(this, activity)
-        activityLauncher.launch(intent)
+    // replace fragment function
+    fun replaceFragment(fragment: Fragment) {
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.fragment_container, fragment)
+        fragmentTransaction.commit()
     }
 }
