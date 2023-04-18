@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "89210607023",
+    "project_id": "icm-project-a53f6",
+    "storage_bucket": "icm-project-a53f6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:89210607023:android:c8907576a185e874d20b5a",
+        "android_client_info": {
+          "package_name": "com.example.icmproject1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "89210607023-mocg5083npjurp3deci00v45okols2pc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDv4CQ713W0KRoryfKb_mjgNeZcoThU9uM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "89210607023-mocg5083npjurp3deci00v45okols2pc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

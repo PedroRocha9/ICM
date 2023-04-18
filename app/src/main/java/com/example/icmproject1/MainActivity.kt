@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 
 class MainActivity : AppCompatActivity() {
@@ -12,16 +11,25 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // To register
         val register = findViewById<Button>(R.id.registerButton)
         register.setOnClickListener {
-            goToActivity(AddFestivals::class.java)
+            goToActivity(RegisterActivity::class.java)
         }
+
+        // To login
+        val login = findViewById<Button>(R.id.loginButton)
+        login.setOnClickListener {
+            goToActivity(LoginActivity::class.java)
+        }
+
     }
 
     private val activityLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
-        // do something if returning to this activity
+        // if returning to this activity, send to lineUp
+        goToActivity(Lineup::class.java)
     }
 
     private fun goToActivity(activity: Class<*>) {
