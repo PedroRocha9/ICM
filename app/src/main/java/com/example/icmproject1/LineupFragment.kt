@@ -5,6 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.example.icmproject1.adapter.ArtistAdapter
+import com.example.icmproject1.data.Datasource
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -29,12 +32,16 @@ class LineupFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_lineup, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val rootView = inflater.inflate(R.layout.fragment_lineup, container, false)
+        val recyclerView = rootView.findViewById<RecyclerView>(R.id.recycler_view)
+
+        val day1 = Datasource(this).loadStages(1)
+        recyclerView.adapter = ArtistAdapter(this, day1[0].artists)
+
+        recyclerView.setHasFixedSize(true)
+
+        return rootView
     }
 
     companion object {

@@ -18,15 +18,6 @@ class Profile : AppCompatActivity() {
         lineup.setOnClickListener {
             goToActivity(Lineup::class.java)
         }
-        qrcode.setOnClickListener {
-            goToActivity(QRCodePrompt::class.java)
-        }
-        findPartner.setOnClickListener {
-            goToActivity(NaughtyPermission::class.java)
-        }
-        findBuddy.setOnClickListener {
-            goToActivity(FindUrBuddies::class.java)
-        }
     }
 
     private val activityLauncher = registerForActivityResult(

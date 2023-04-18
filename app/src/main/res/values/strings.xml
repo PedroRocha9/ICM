@@ -22,4 +22,22 @@
     <string name="odemira_portugal">Odemira, Portugal</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Lineups Static Data -->
+    <string-array name="artists">
+        <item>Quim Barreiros</item>
+        <item>Toni Carreira</item>
+        <item>Wet Bed Gang</item>
+        <item>Artic Monkeys</item>
+        <item>Slow J</item>
+        <item>J Balvin</item>
+        <item>Richie Campbell</item>
+        <item>Pedro Abrunhosa</item>
+        <item>Rui Veloso</item>
+    </string-array>
+
+    <string-array name="stages">
+        <item>Main Stage</item>
+        <item>Secondary Stage</item>
+    </string-array>
 </resources>
