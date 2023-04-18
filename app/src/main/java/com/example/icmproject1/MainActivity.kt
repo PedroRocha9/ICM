@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // To register
-        val register = findViewById<Button>(R.id.registerButton)
+        val register = findViewById<Button>(R.id.registerButtonMain)
         register.setOnClickListener {
             goToActivity(RegisterActivity::class.java)
         }
@@ -29,7 +29,6 @@ class MainActivity : AppCompatActivity() {
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
         // if returning to this activity, send to lineUp
-        goToActivity(Lineup::class.java)
     }
 
     private fun goToActivity(activity: Class<*>) {

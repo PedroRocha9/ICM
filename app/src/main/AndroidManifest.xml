@@ -17,6 +17,9 @@
             android:name=".TakingPicNaughty"
             android:exported="false" />
         <activity
+            android:name=".RegisterActivity"
+            android:exported="false" />
+        <activity
             android:name=".NaughtyPermission"
             android:exported="false" />
         <activity

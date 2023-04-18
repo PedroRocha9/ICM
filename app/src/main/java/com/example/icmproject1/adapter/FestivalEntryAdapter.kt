@@ -7,18 +7,30 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.icmproject1.R
 import com.example.icmproject1.model.FestivalEntry
-
 class FestivalEntryAdapter(
-    private val dataset: List<FestivalEntry>
+    val dataset: List<FestivalEntry>,
+    private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<FestivalEntryAdapter.ItemViewHolder>() {
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder.
     // Each data item is just an Affirmation object.
-    class ItemViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+    inner class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view),
+        View.OnClickListener {
         val name : TextView = view.findViewById(R.id.festival_title)
         val location : TextView = view.findViewById(R.id.festival_location)
+
+        init {
+            view.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            val position: Int = adapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                listener.onItemClick(v, position)
+            }
+        }
     }
 
     /**

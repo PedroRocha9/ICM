@@ -3,17 +3,13 @@ package com.example.icmproject1
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import com.google.firebase.auth.FirebaseAuth
 
 class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_register)
 
         // To choose festival
         val register = findViewById<Button>(R.id.registerButton)
@@ -34,7 +30,7 @@ class RegisterActivity : AppCompatActivity() {
         //registerUser(username, email, password)
     }
 
-    private fun registerUser(username: Any, email: Any, password: Any) {
+    /*private fun registerUser(username: Any, email: Any, password: Any) {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         auth.createUserWithUsernameAndPassword(username, email, password)
             .addOnCompleteListener(this) { task ->
@@ -51,7 +47,7 @@ class RegisterActivity : AppCompatActivity() {
                     updateUI(null)
                 }
             }
-    }
+    }*/
 
     private val activityLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
