@@ -56,4 +56,13 @@
         <item>Lisboa, Portugal</item>
         <item>Porto, Portugal</item>
     </string-array>
+
+    <string-array name="coordinates">
+        <item>37.55,-8.75</item>
+        <item>41.92,-8.59</item>
+        <item>38.69,-9.21</item>
+        <item>38.72,-9.14</item>
+        <item>41.15,-8.62</item>
+    </string-array>
+
 </resources>

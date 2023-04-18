@@ -18,10 +18,6 @@ class Lineup : AppCompatActivity() {
 
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.findPartner -> {
-                    replaceFragment(FindPartnerFragment())
-                    true
-                }
                 R.id.lineup -> {
                     replaceFragment(LineupFragment())
                     true

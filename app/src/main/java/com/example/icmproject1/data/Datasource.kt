@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.fragment.app.Fragment
 import com.example.icmproject1.R
 import com.example.icmproject1.model.Artist
+import com.example.icmproject1.model.Coordinates
 import com.example.icmproject1.model.FestivalEntry
 import com.example.icmproject1.model.Stage
 
@@ -88,8 +89,9 @@ class Datasource(private val context: Context) {
     fun loadFestivalEntries(): List<FestivalEntry> {
         val festivalNames = resources.getStringArray(R.array.festivals)
         val festivalLocations = resources.getStringArray(R.array.locations)
+        val festivalCoordinates = resources.getStringArray(R.array.coordinates)
         return festivalNames.mapIndexed { index, name ->
-            FestivalEntry(name, festivalLocations[index])
+            FestivalEntry(name, festivalLocations[index], Coordinates(festivalCoordinates[index].split(",")[0].toDouble(), festivalCoordinates[index].split(",")[1].toDouble()))
         }
     }
 }

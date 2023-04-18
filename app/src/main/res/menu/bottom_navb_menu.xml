@@ -4,7 +4,8 @@
     <item
         android:title="Lineup"
         android:icon="@drawable/microphone_white"
-        android:id="@+id/lineup"/>
+        android:id="@+id/lineup"
+        android:checked="true"/>
     <item
         android:title="Find Buddy"
         android:icon="@drawable/map_white"
@@ -13,8 +14,4 @@
         android:title="Scan"
         android:icon="@drawable/qr_code_white"
         android:id="@+id/qrcode"/>
-    <item
-        android:title="Find Partner"
-        android:icon="@drawable/tongue_out_white"
-        android:id="@+id/findPartner"/>
 </menu>

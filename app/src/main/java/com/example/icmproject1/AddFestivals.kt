@@ -26,9 +26,9 @@ class AddFestivals : AppCompatActivity(), OnItemClickListener {
         recyclerView.setHasFixedSize(true)
 
         val choose = findViewById<Button>(R.id.choose)
-
         choose.setOnClickListener {
-            goToActivity(Lineup::class.java)
+            if (choose.isEnabled)
+                goToActivity(Lineup::class.java)
         }
     }
 
