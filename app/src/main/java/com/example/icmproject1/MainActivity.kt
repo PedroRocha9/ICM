@@ -5,11 +5,23 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import kotlin.math.log
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var auth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        // Check if user is signed in (non-null) and update UI accordingly.
+        auth = Firebase.auth
+        //var currentUser = auth.currentUser
+        // log current user
+        //if(currentUser != null){
+        //    goToActivity(Lineup::class.java)
+        //}
 
         // To register
         val register = findViewById<Button>(R.id.registerButtonMain)
