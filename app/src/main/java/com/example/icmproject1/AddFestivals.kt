@@ -28,7 +28,7 @@ class AddFestivals : AppCompatActivity(), OnItemClickListener {
         val choose = findViewById<Button>(R.id.choose)
 
         choose.setOnClickListener {
-            goToActivity(LoginActivity::class.java)
+            goToActivity(Lineup::class.java)
         }
     }
 
