@@ -25,115 +25,20 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="@color/text"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintBottom_toTopOf="@+id/festival_list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/festival_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="300dp"
         android:orientation="vertical"
         android:padding="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-
-        <androidx.gridlayout.widget.GridLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="10dp"
-            app:columnCount="1"
-            app:rowCount="2">
-
-            <TextView
-                android:id="@+id/title1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:text="@string/meo_sudoeste"
-                android:textColor="@color/text"
-                android:textSize="24sp"
-                app:layout_column="0"
-                app:layout_columnWeight="1"
-                app:layout_row="0" />
-
-            <TextView
-                android:id="@+id/location1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:alpha="0.7"
-                android:text="@string/odemira_portugal"
-                android:textColor="@color/text"
-                app:layout_column="0"
-                app:layout_columnWeight="1"
-                app:layout_row="1" />
-
-        </androidx.gridlayout.widget.GridLayout>
-
-        <androidx.gridlayout.widget.GridLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/selected"
-            android:padding="10dp"
-            app:columnCount="1"
-            app:rowCount="2">
-
-            <TextView
-                android:id="@+id/title2"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:text="Vodafone Paredes de Coura"
-                android:textColor="@color/background"
-                android:textSize="24sp"
-                app:layout_column="0"
-                app:layout_columnWeight="1"
-                app:layout_row="0" />
-
-            <TextView
-                android:id="@+id/location2"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:alpha="0.7"
-                android:text="Paredes de Coura, Portugal"
-                android:textColor="@color/background"
-                app:layout_column="0"
-                app:layout_columnWeight="1"
-                app:layout_row="1" />
-
-        </androidx.gridlayout.widget.GridLayout>
-
-        <androidx.gridlayout.widget.GridLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            app:columnCount="1"
-            app:rowCount="2">
-
-            <TextView
-                android:id="@+id/title3"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:text="NOS Alive"
-                android:textColor="@color/text"
-                android:textSize="24sp"
-                app:layout_column="0"
-                app:layout_columnWeight="1"
-                app:layout_row="0" />
-
-            <TextView
-                android:id="@+id/location3"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:alpha="0.7"
-                android:text="Passeio Marítimo de Algés, Oeiras, Portugal"
-                android:textColor="@color/text"
-                app:layout_column="0"
-                app:layout_columnWeight="1"
-                app:layout_row="1" />
-
-        </androidx.gridlayout.widget.GridLayout>
-    </LinearLayout>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layoutManager="LinearLayoutManager"/>
 
     <Button
         android:id="@+id/choose"

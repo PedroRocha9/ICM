@@ -40,4 +40,20 @@
         <item>Main Stage</item>
         <item>Secondary Stage</item>
     </string-array>
+
+    <string-array name="festivals">
+        <item>MEO Sudoeste</item>
+        <item>Vodafone Paredes de Coura</item>
+        <item>NOS Alive</item>
+        <item>Rock in Rio</item>
+        <item>NOS Primavera Sound</item>
+    </string-array>
+
+    <string-array name="locations">
+        <item>Odemira, Portugal</item>
+        <item>Paredes de Coura, Portugal</item>
+        <item>Passeio Marítimo de Algés, Oeiras, Portugal</item>
+        <item>Lisboa, Portugal</item>
+        <item>Porto, Portugal</item>
+    </string-array>
 </resources>

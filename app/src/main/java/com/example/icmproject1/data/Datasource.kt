@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.fragment.app.Fragment
 import com.example.icmproject1.R
 import com.example.icmproject1.model.Artist
+import com.example.icmproject1.model.FestivalEntry
 import com.example.icmproject1.model.Stage
 
 class Datasource(private val context: Context) {
@@ -82,5 +83,13 @@ class Datasource(private val context: Context) {
             }
         }
         return listOf()
+    }
+
+    fun loadFestivalEntries(): List<FestivalEntry> {
+        val festivalNames = resources.getStringArray(R.array.festivals)
+        val festivalLocations = resources.getStringArray(R.array.locations)
+        return festivalNames.mapIndexed { index, name ->
+            FestivalEntry(name, festivalLocations[index])
+        }
     }
 }
