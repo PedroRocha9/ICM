@@ -11,7 +11,6 @@ import com.example.icmproject1.R
 import com.example.icmproject1.model.Artist
 
 class ArtistAdapter(
-    private val context: Fragment,
     private val dataset: Array<Artist>
 ) : RecyclerView.Adapter<ArtistAdapter.ItemViewHolder>() {
 

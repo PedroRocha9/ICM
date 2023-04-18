@@ -1,11 +1,12 @@
 package com.example.icmproject1.data
 
+import android.content.Context
 import androidx.fragment.app.Fragment
 import com.example.icmproject1.R
 import com.example.icmproject1.model.Artist
 import com.example.icmproject1.model.Stage
 
-class Datasource(private val context: Fragment) {
+class Datasource(private val context: Context) {
     private val resources = context.resources
 
     fun loadStages(day : Int): List<Stage> {
@@ -34,7 +35,7 @@ class Datasource(private val context: Fragment) {
                         Artist(resources.getStringArray(R.array.artists)[0], "19:00"),
                         Artist(resources.getStringArray(R.array.artists)[3], "23:00"),
                         Artist(resources.getStringArray(R.array.artists)[2], "00:00"),
-                        Artist(resources.getStringArray(R.array.artists)[1], "01:00")
+                        Artist(resources.getStringArray(R.array.artists)[1], "01:00"),
                     )), Stage(
                     resources.getStringArray(R.array.stages)[1],
                     arrayOf(
