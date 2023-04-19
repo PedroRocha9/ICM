@@ -36,7 +36,7 @@
             android:src="@drawable/user_white"
             android:layout_marginRight="15dp"/>
 
-    </androidx.appcompat.widget.Toolbar>>
+    </androidx.appcompat.widget.Toolbar>
 
     <FrameLayout
         android:layout_width="0dp"

@@ -65,14 +65,14 @@
         <item>41.15,-8.62</item>
     </string-array>
 
-    <string-array name="buddies">
+    <string-array name="users">
         <item>john123</item>
         <item>powerlol</item>
         <item>lilpump</item>
         <item>rose99</item>
     </string-array>
 
-    <string-array name="buddies_location">
+    <string-array name="users_location">
         <item>38.0122,-7.8653</item>
         <item>37.9877,-7.8905</item>
         <item>38.0221,-7.8684</item>

@@ -7,14 +7,19 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+import androidx.core.widget.addTextChangedListener
 import com.example.icmproject1.data.Datasource
+import com.example.icmproject1.model.Coordinates
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -41,6 +46,8 @@ class FindBuddyFragment : Fragment() {
     private var param2: String? = null
     lateinit var mapFragment : SupportMapFragment
     lateinit var googleMap: GoogleMap
+    private var buddyName = "";
+    private var buddyLocation = Coordinates(0.0, 0.0)
 
     @SuppressLint("MissingPermission")
     private val requestPermissionLauncher = registerForActivityResult(
@@ -116,6 +123,33 @@ class FindBuddyFragment : Fragment() {
         view.findViewById<View>(R.id.my_location_legend).setOnClickListener {
             useMyLocation { myLocation ->
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(myLocation.latitude, myLocation.longitude), 10F))
+            }
+        }
+        view.findViewById<View>(R.id.buddy_location_legend).setOnClickListener {
+            if (buddyLocation.latitude != 0.0 && buddyLocation.longitude != 0.0) {
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(buddyLocation.latitude, buddyLocation.longitude), 10F))
+            } else {
+                Toast.makeText(context, "No Buddy Selected", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        // handle buddy search
+        val inputFindBuddy = view.findViewById<EditText>(R.id.input_find_buddy)
+        val findButton = view.findViewById<Button>(R.id.button_find)
+        findButton.setOnClickListener {
+            buddyName = inputFindBuddy.text.toString()
+            buddyLocation = Datasource(requireContext()).getUserLocation(buddyName)
+            if (buddyLocation.latitude == 0.0 && buddyLocation.longitude == 0.0) {
+                Toast.makeText(context, "User not found", Toast.LENGTH_SHORT).show()
+            } else {
+                val icon = generateMarkerIcon(R.drawable.friend_location)
+                googleMap.addMarker(
+                    MarkerOptions()
+                        .position(LatLng(buddyLocation.latitude, buddyLocation.longitude))
+                        .title(buddyName)
+                        .icon(icon)
+                )
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(buddyLocation.latitude, buddyLocation.longitude), 10F))
             }
         }
 

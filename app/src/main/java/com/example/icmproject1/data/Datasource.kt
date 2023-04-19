@@ -94,4 +94,13 @@ class Datasource(private val context: Context) {
             FestivalEntry(name, festivalLocations[index], Coordinates(festivalCoordinates[index].split(",")[0].toDouble(), festivalCoordinates[index].split(",")[1].toDouble()))
         }
     }
+
+    fun getUserLocation(username : String) : Coordinates {
+        val userIndex = resources.getStringArray(R.array.users).indexOf(username)
+        if (userIndex == -1)
+            return Coordinates(0.0, 0.0)
+
+        val userCoordinates = resources.getStringArray(R.array.users_location)[userIndex].split(",")
+        return Coordinates(userCoordinates[0].toDouble(), userCoordinates[1].toDouble())
+    }
 }
