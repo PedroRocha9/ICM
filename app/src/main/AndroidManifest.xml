@@ -26,14 +26,9 @@
             android:value="barcode" />
 
         <activity
-            android:name=".TakingPicNaughty"
-            android:exported="false" />
-        <activity
             android:name=".RegisterActivity"
-            android:exported="false" />
-        <activity
-            android:name=".NaughtyPermission"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity
             android:name=".ScanQRCode"
             android:exported="false" />
@@ -41,28 +36,25 @@
             android:name=".QRCodeToScan"
             android:exported="false" />
         <activity
-            android:name=".QRCodePrompt"
-            android:exported="false" />
-        <activity
-            android:name=".FindUrBuddies"
-            android:exported="false" />
-        <activity
             android:name=".ProfileActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity
             android:name=".LoginActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity
             android:name=".AddFestivals"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity
             android:name=".Lineup"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

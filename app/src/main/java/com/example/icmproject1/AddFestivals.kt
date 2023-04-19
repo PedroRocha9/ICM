@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.icmproject1.adapter.FestivalEntryAdapter
 import com.example.icmproject1.adapter.OnItemClickListener
 import com.example.icmproject1.data.Datasource
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.ktx.firestore
@@ -51,9 +52,21 @@ class AddFestivals : AppCompatActivity(), OnItemClickListener {
         }
 
         choose.setOnClickListener {
-            if (choose.isEnabled){
+            if (choose.isEnabled) {
+                val currentUser = Firebase.auth.currentUser
+                if (currentUser != null) {
+                    val uid = currentUser.uid
+                    Log.e("AddFestivals", "uid: $uid")
+
+                    db.collection("users").document(uid).update("chosenFestival", chosenFestival, "festivalLocation", chosenLocation)
+                        .addOnSuccessListener {
+                            Log.d("AddFestivals", "User document updated")
+                        }
+                        .addOnFailureListener { e ->
+                            Log.w("AddFestivals", "Error updating user document", e)
+                        }
+                }
                 goToActivity(Lineup::class.java)
-                db.collection("users").document("user").update("festival", chosenFestival)
                 finish()
             }
         }

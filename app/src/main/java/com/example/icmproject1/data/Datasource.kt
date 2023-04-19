@@ -1,12 +1,10 @@
 package com.example.icmproject1.data
 
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.util.Log
 import com.example.icmproject1.R
-import com.example.icmproject1.model.Artist
-import com.example.icmproject1.model.Coordinates
-import com.example.icmproject1.model.FestivalEntry
-import com.example.icmproject1.model.Stage
+import com.example.icmproject1.model.*
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
@@ -18,23 +16,37 @@ class Datasource(private val context: Context) {
         val stagesList = mutableListOf<Stage>()
         val festivalDoc = firestore.collection("festivals").document(festivalUID).get().await()
         val days = festivalDoc.get("days") as List<Map<String, Any>>
-
         val dayMap = days[day - 1]
-        val mainStageMap = dayMap["mainStage"] as Map<String, List<String>>
-        val secondaryStageMap = dayMap["secondaryStage"] as Map<String, List<String>>
 
-        val mainStageArtists = mainStageMap["artists"]!!
-        val mainStageHours = mainStageMap["hours"]!!
-        val mainStage = mainStageArtists.zip(mainStageHours).map { Artist(it.first, it.second) }.toTypedArray()
+        val mainStageMap = dayMap["mainStage"] as? Map<String, List<String>>
+        val secondaryStageMap = dayMap["secStage"] as? Map<String, List<String>>
 
-        val secondaryStageArtists = secondaryStageMap["artists"]!!
-        val secondaryStageHours = secondaryStageMap["hours"]!!
-        val secondaryStage = secondaryStageArtists.zip(secondaryStageHours).map { Artist(it.first, it.second) }.toTypedArray()
+        if (mainStageMap != null) {
+            val mainStageArtists = mainStageMap["artists"] ?: emptyList()
+            val mainStageHours = mainStageMap["hours"] ?: emptyList()
+            val mainStage = mainStageArtists.zip(mainStageHours).map { Artist(it.first, it.second) }.toTypedArray()
 
-        stagesList.add(Stage("Main Stage", mainStage))
-        stagesList.add(Stage("Secondary Stage", secondaryStage))
+            stagesList.add(Stage("Main Stage", mainStage))
+        }
+
+        if (secondaryStageMap != null) {
+            val secondaryStageArtists = secondaryStageMap["artists"] ?: emptyList()
+            val secondaryStageHours = secondaryStageMap["hours"] ?: emptyList()
+            val secondaryStage = secondaryStageArtists.zip(secondaryStageHours).map { Artist(it.first, it.second) }.toTypedArray()
+
+            stagesList.add(Stage("Secondary Stage", secondaryStage))
+        }
 
         return stagesList
+    }
+
+    suspend fun loadFestival(festivalUID: String): FestivalEntry {
+        val festivalDoc = firestore.collection("festivals").document(festivalUID).get().await()
+        val name = festivalDoc.getString("name")!!
+        val location = festivalDoc.getString("location")!!
+        val coordinates = festivalDoc.getGeoPoint("coords")!!
+        Log.e("FESTIVALS", name)
+        return FestivalEntry(name, location, Coordinates(coordinates.latitude, coordinates.longitude))
     }
 
     suspend fun loadFestivalEntries(): List<FestivalEntry> {
@@ -72,11 +84,11 @@ class Datasource(private val context: Context) {
         return userFestivalsList
     }
 
-    suspend fun getUserLocation(username: String): Coordinates {
-        val userDoc = firestore.collection("users").document(username).get().await()
-        val coordinates = userDoc.getGeoPoint("location")!!
-
-        return Coordinates(coordinates.latitude, coordinates.longitude)
+    suspend fun getUserLocation(userUID : String) : Coordinates {
+        val userDoc = firestore.collection("users").document(userUID).get().await()
+        val coordinates = userDoc.getGeoPoint("coords")!!
+        val user = User(userUID, Coordinates(coordinates.latitude, coordinates.longitude))
+        return user.coordinates
     }
 
     suspend fun getUserBuddies(username: String): List<String> {

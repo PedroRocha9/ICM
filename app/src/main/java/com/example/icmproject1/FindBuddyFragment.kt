@@ -2,11 +2,13 @@ package com.example.icmproject1
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.ContentValues
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.location.Location
 import android.os.Bundle
+import android.provider.SyncStateContract.Helpers.update
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,10 +16,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.widget.addTextChangedListener
+import androidx.recyclerview.widget.RecyclerView
+import com.example.icmproject1.adapter.ArtistAdapter
 import com.example.icmproject1.data.Datasource
 import com.example.icmproject1.model.Coordinates
 import com.google.android.gms.location.LocationServices
@@ -30,6 +36,15 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.GeoPoint
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -50,6 +65,9 @@ class FindBuddyFragment : Fragment() {
     private var buddyName = "";
     private var buddyLocation = Coordinates(0.0, 0.0)
     private var buddyMarker : Marker? = null
+    private val firestore = FirebaseFirestore.getInstance()
+    private val auth = FirebaseAuth.getInstance()
+    private var festivalUID : String = "Mso42n0MeMOZmKrKLfgQ"
 
     @SuppressLint("MissingPermission")
     private val requestPermissionLauncher = registerForActivityResult(
@@ -101,27 +119,69 @@ class FindBuddyFragment : Fragment() {
 
             } else {
                 setupMyLocation(googleMap)
-            }
-/*
-            val selectedFestival = Datasource(requireContext()).loadFestivalEntries()[0]
-            val festival = LatLng(selectedFestival.coordinates.latitude, selectedFestival.coordinates.longitude)
-            val icon = generateMarkerIcon(R.drawable.festival)
+                useMyLocation { myLocation ->
 
-            googleMap.addMarker(
-                MarkerOptions()
-                    .position(festival)
-                    .title(selectedFestival.name)
-                    .icon(icon)
-            )
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(festival, 10F))*/
+                    val user = auth.currentUser
+                    if (user != null) {
+                        val uid = user.uid
+                        Log.e("TAG", "uid: $uid")
+                        firestore.collection("users").document(uid)
+                            .update("coords", GeoPoint(myLocation.latitude, myLocation.longitude))
+                            .addOnSuccessListener { documentReference ->
+                                Log.d("TAG", "DocumentSnapshot added with ID: $documentReference")
+                            }
+                            .addOnFailureListener { e ->
+                                Log.w("TAG", "Error adding document", e)
+                            }
+                    }
+
+                }
+            }
+
+            // get user's festival festivalUID from firestore
+            val user = auth.currentUser
+            if (user != null) {
+                // get user chosenFestival
+                val docRef = firestore.collection("users").document(user.uid).get().addOnSuccessListener {
+                    val festivalName = it.get("chosenFestival")
+                    // get festivalUID from festivalName
+                    val festivalRef = firestore.collection("festivals").whereEqualTo("name", festivalName).get().addOnSuccessListener {
+                        festivalUID = it.documents[0].id
+                        Log.e(ContentValues.TAG, "festivalUID: $festivalUID")
+
+                        // Load data for all stages
+                        val coroutineScope = CoroutineScope(Dispatchers.Main)
+
+                        coroutineScope.launch {
+                            val festival = Datasource(requireContext()).loadFestival(festivalUID)
+                            val festivalLocation = LatLng(festival.coordinates.latitude, festival.coordinates.longitude)
+                            val icon = generateMarkerIcon(R.drawable.festival)
+                            googleMap.addMarker(
+                                MarkerOptions()
+                                    .position(festivalLocation)
+                                    .title(festival.name)
+                                    .icon(icon)
+                            )
+                            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(festivalLocation, 10F))
+
+                        }
+
+                        view.findViewById<View>(R.id.festival_location_legend).setOnClickListener {
+                            val coroutineScopeClick = CoroutineScope(Dispatchers.Main)
+                            coroutineScopeClick.launch {
+                                val selectedFestival = Datasource(requireContext()).loadFestival(festivalUID)
+                                val festival = LatLng(selectedFestival.coordinates.latitude, selectedFestival.coordinates.longitude)
+                                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(festival, 10F))
+                            }
+                        }
+
+                    }
+                }
+            }
+
         })
 
         // add click listeners to map legend entries
-        view.findViewById<View>(R.id.festival_location_legend).setOnClickListener {
-           /* val selectedFestival = Datasource(requireContext()).loadFestivalEntries()[0]
-            val festival = LatLng(selectedFestival.coordinates.latitude, selectedFestival.coordinates.longitude)
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(festival, 10F))*/
-        }
         view.findViewById<View>(R.id.my_location_legend).setOnClickListener {
             useMyLocation { myLocation ->
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(myLocation.latitude, myLocation.longitude), 10F))
@@ -139,23 +199,40 @@ class FindBuddyFragment : Fragment() {
         val inputFindBuddy = view.findViewById<EditText>(R.id.input_find_buddy)
         val findButton = view.findViewById<Button>(R.id.button_find)
         findButton.setOnClickListener {
-           /* buddyName = inputFindBuddy.text.toString()
-            buddyLocation = Datasource(requireContext()).getUserLocation(buddyName)
-            if (buddyLocation.latitude == 0.0 && buddyLocation.longitude == 0.0) {
-                Toast.makeText(context, "User not found", Toast.LENGTH_SHORT).show()
-            } else {
-                // remove old marker
-                buddyMarker?.remove()
+            buddyName = inputFindBuddy.text.toString()
+            var buddyUID = ""
+            val docRef = firestore.collection("users").whereEqualTo("username", buddyName).get().addOnSuccessListener {
+                // check if none found
+                if (it.documents.isEmpty()) {
+                    Toast.makeText(context, "User not found", Toast.LENGTH_SHORT).show()
+                    return@addOnSuccessListener
+                }
+                buddyUID = it.documents[0].id
+                Log.e(ContentValues.TAG, "buddyUID: $buddyUID")
+                val coroutineScope = CoroutineScope(Dispatchers.Main)
+                coroutineScope.launch {
+                    buddyLocation = Datasource(requireContext()).getUserLocation(buddyUID)
+                    Log.d(ContentValues.TAG, "buddyLocation: ${buddyLocation.latitude}, ${buddyLocation.longitude}")
+                    if (buddyLocation.latitude == 0.0 && buddyLocation.longitude == 0.0) {
+                        Toast.makeText(context, "User not found", Toast.LENGTH_SHORT).show()
+                    } else {
+                        // remove old marker
+                        buddyMarker?.remove()
 
-                val icon = generateMarkerIcon(R.drawable.friend_location)
-                buddyMarker = googleMap.addMarker(
-                    MarkerOptions()
-                        .position(LatLng(buddyLocation.latitude, buddyLocation.longitude))
-                        .title(buddyName)
-                        .icon(icon)
-                )
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(buddyLocation.latitude, buddyLocation.longitude), 10F))
-            }*/
+                        val icon = generateMarkerIcon(R.drawable.friend_location)
+                        buddyMarker = googleMap.addMarker(
+                            MarkerOptions()
+                                .position(LatLng(buddyLocation.latitude, buddyLocation.longitude))
+                                .title(buddyName)
+                                .icon(icon)
+                        )
+                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(buddyLocation.latitude, buddyLocation.longitude), 10F))
+                    }
+
+                }
+
+
+            }
         }
 
         return view
