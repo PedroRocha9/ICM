@@ -8,6 +8,8 @@ import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 class ProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,6 +17,7 @@ class ProfileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_profile)
         var auth = FirebaseAuth.getInstance()
         var user = auth.currentUser
+
         // log its email
         Log.d("ProfileActivity", "User email is ${user?.email}")
         var logOut = findViewById<Button>(R.id.logOut)
