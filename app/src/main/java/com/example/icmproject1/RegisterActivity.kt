@@ -12,18 +12,22 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import com.example.icmproject1.model.User
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import org.w3c.dom.Text
 
 class RegisterActivity : AppCompatActivity() {
+        private var auth = FirebaseAuth.getInstance();
+        private var dbRef = FirebaseDatabase.getInstance().getReference("Users")
+        private lateinit var username : EditText
+        private lateinit var email : EditText
+        private lateinit var password : EditText
+        private lateinit var confirmPassword : EditText
         override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
-        var auth = FirebaseAuth.getInstance();
-        var username = findViewById<EditText>(R.id.username)
-        var email = findViewById<EditText>(R.id.email)
-        var password = findViewById<EditText>(R.id.password)
-        var confirmPassword = findViewById<EditText>(R.id.confirmPassword)
+
 
         // Already Has Account
         val alreadyHasAccount = findViewById<TextView>(R.id.alreadyHaveAccount)
@@ -31,6 +35,11 @@ class RegisterActivity : AppCompatActivity() {
             goToActivity(LoginActivity::class.java)
             finish()
         }
+
+        username = findViewById<EditText>(R.id.username)
+        email = findViewById<EditText>(R.id.email)
+        password = findViewById<EditText>(R.id.password)
+        confirmPassword = findViewById<EditText>(R.id.confirmPassword)
 
         val register = findViewById<Button>(R.id.registerButton)
         register.setOnClickListener {
@@ -78,6 +87,8 @@ class RegisterActivity : AppCompatActivity() {
                             Log.d(TAG, "Email: ${email.text.toString()}")
                             Log.d(TAG, "Username: ${username.text.toString()}")
 
+                            saveUserToFirebaseDatabase()
+
                             // go to add festivals activity
                             goToActivity(AddFestivals::class.java)
                             finish()
@@ -90,6 +101,20 @@ class RegisterActivity : AppCompatActivity() {
                         }
                 }
             }
+        }
+    }
+
+    private fun saveUserToFirebaseDatabase() {
+        val userId = dbRef.push().key!!
+        val newUser = UserModel(userId, username.text.toString(), email.text.toString(), password.text.toString(), null, null, null, null, null)
+
+        dbRef.child(userId).setValue(newUser).addOnCompleteListener {
+            Log.e(TAG,"Ques qui se passe? Devia ter seguido")
+            Toast.makeText(this, "User saved successfully", Toast.LENGTH_SHORT).show()
+            Log.e(TAG, "User saved successfully")
+        }.addOnFailureListener{err ->
+            Toast.makeText(this, "Error ${err.message} while saving user", Toast.LENGTH_SHORT).show()
+            Log.e(TAG, "Error saving user")
         }
     }
 

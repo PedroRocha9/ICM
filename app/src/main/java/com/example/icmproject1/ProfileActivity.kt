@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment
 import com.example.icmproject1.databinding.ActivityLineupBinding
 import com.example.icmproject1.databinding.ActivityProfileBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 class ProfileActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProfileBinding
@@ -37,6 +39,7 @@ class ProfileActivity : AppCompatActivity() {
 
         var auth = FirebaseAuth.getInstance()
         var user = auth.currentUser
+
         // log its email
         Log.d("ProfileActivity", "User email is ${user?.email}")
         var logOut = binding.logOut

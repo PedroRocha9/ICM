@@ -11,8 +11,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.icmproject1.adapter.FestivalEntryAdapter
 import com.example.icmproject1.adapter.OnItemClickListener
 import com.example.icmproject1.data.Datasource
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import org.w3c.dom.Text
 
 class AddFestivals : AppCompatActivity(), OnItemClickListener {
+    private lateinit var chosenFestival : String
+    private lateinit var chosenLocation : String
+    private lateinit var dbRef : DatabaseReference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_festivals)
@@ -53,6 +59,16 @@ class AddFestivals : AppCompatActivity(), OnItemClickListener {
         view.background = getDrawable(R.drawable.selected)
         view.findViewById<TextView>(R.id.festival_title).setTextColor(resources.getColor(R.color.background))
         view.findViewById<TextView>(R.id.festival_location).setTextColor(resources.getColor(R.color.background))
+
+        view.findViewById<TextView>(R.id.festival_title).text.let {
+            chosenFestival = it.toString()
+            Log.d("AddFestivals", "Chosen festival is $chosenFestival")
+        }
+
+        view.findViewById<TextView>(R.id.festival_location).text.let {
+            chosenLocation = it.toString()
+            Log.d("AddFestivals", "Chosen location is $chosenLocation")
+        }
 
         // deselect all others
         val recyclerView = view.parent as RecyclerView
