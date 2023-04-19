@@ -7,6 +7,37 @@
     android:background="#2C2C2C"
     tools:context=".Lineup">
 
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/main"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/toolbarTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lineup"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:layout_gravity="start|center_vertical" />
+
+        <ImageView
+            android:id="@+id/userIcon"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_gravity="end|center_vertical"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/user_white"
+            android:layout_marginRight="15dp"/>
+
+    </androidx.appcompat.widget.Toolbar>>
+
     <FrameLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -14,7 +45,7 @@
         app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/topBar" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"

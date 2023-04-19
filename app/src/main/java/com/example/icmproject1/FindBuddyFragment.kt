@@ -20,6 +20,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
@@ -49,7 +50,7 @@ class FindBuddyFragment : Fragment() {
             permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true) {
             // Permission was granted, perform your operations here
             // For example, start updating user location
-            googleMap.isMyLocationEnabled = true
+            setupMyLocation(googleMap)
         } else {
             // Permission denied, handle the user's response here
             // For example, show a message explaining why the permission is necessary
@@ -90,37 +91,12 @@ class FindBuddyFragment : Fragment() {
                 )
 
             } else {
-                googleMap.isMyLocationEnabled = true
-                val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext())
-                fusedLocationProviderClient.lastLocation.addOnSuccessListener { location: Location? ->
-                    if (location != null) {
-                        val latLng = LatLng(location.latitude, location.longitude)
-
-                        // Add a marker at the user's location
-                        val originalBitmap = BitmapFactory.decodeResource(resources, R.drawable.my_location)
-                        val density = resources.displayMetrics.density
-                        val dpWidth = 40f
-                        val dpHeight = 40f
-                        val scaledWidth = (dpWidth * density).toInt()
-                        val scaledHeight = (dpHeight * density).toInt()
-                        val scaledBitmap = Bitmap.createScaledBitmap(originalBitmap, scaledWidth, scaledHeight, false)
-                        val icon = BitmapDescriptorFactory.fromBitmap(scaledBitmap)
-                        googleMap.addMarker(MarkerOptions().position(latLng).icon(icon))
-                    }
-                }
+                setupMyLocation(googleMap)
             }
 
             val selectedFestival = Datasource(requireContext()).loadFestivalEntries()[0]
             val festival = LatLng(selectedFestival.coordinates.latitude, selectedFestival.coordinates.longitude)
-
-            val originalBitmap = BitmapFactory.decodeResource(resources, R.drawable.festival)
-            val density = resources.displayMetrics.density
-            val dpWidth = 40f
-            val dpHeight = 40f
-            val scaledWidth = (dpWidth * density).toInt()
-            val scaledHeight = (dpHeight * density).toInt()
-            val scaledBitmap = Bitmap.createScaledBitmap(originalBitmap, scaledWidth, scaledHeight, false)
-            val icon = BitmapDescriptorFactory.fromBitmap(scaledBitmap)
+            val icon = generateMarkerIcon(R.drawable.festival)
 
             googleMap.addMarker(
                 MarkerOptions()
@@ -130,6 +106,18 @@ class FindBuddyFragment : Fragment() {
             )
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(festival, 10F))
         })
+
+        // add click listeners to map legend entries
+        view.findViewById<View>(R.id.festival_location_legend).setOnClickListener {
+            val selectedFestival = Datasource(requireContext()).loadFestivalEntries()[0]
+            val festival = LatLng(selectedFestival.coordinates.latitude, selectedFestival.coordinates.longitude)
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(festival, 10F))
+        }
+        view.findViewById<View>(R.id.my_location_legend).setOnClickListener {
+            useMyLocation { myLocation ->
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(myLocation.latitude, myLocation.longitude), 10F))
+            }
+        }
 
         return view
     }
@@ -152,5 +140,37 @@ class FindBuddyFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    private fun generateMarkerIcon(iconId : Int) : BitmapDescriptor {
+        val originalBitmap = BitmapFactory.decodeResource(resources, iconId)
+        val density = resources.displayMetrics.density
+        val dpWidth = 40f
+        val dpHeight = 40f
+        val scaledWidth = (dpWidth * density).toInt()
+        val scaledHeight = (dpHeight * density).toInt()
+        val scaledBitmap = Bitmap.createScaledBitmap(originalBitmap, scaledWidth, scaledHeight, false)
+        return BitmapDescriptorFactory.fromBitmap(scaledBitmap)
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun useMyLocation(callback: (Location) -> Unit) {
+        val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext())
+        fusedLocationProviderClient.lastLocation.addOnSuccessListener { location: Location? ->
+            if (location != null)
+                callback(location)
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun setupMyLocation(googleMap: GoogleMap) {
+        googleMap.isMyLocationEnabled = true
+        useMyLocation { location ->
+            val latLng = LatLng(location.latitude, location.longitude)
+
+            // Add a marker at the user's location
+            val icon = generateMarkerIcon(R.drawable.my_location)
+            googleMap.addMarker(MarkerOptions().position(latLng).icon(icon))
+        }
     }
 }
