@@ -1,10 +1,25 @@
 package com.example.icmproject1
 
+import android.app.Activity
+import android.app.Activity.RESULT_OK
+import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.provider.MediaStore
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
+import androidx.core.app.ActivityCompat.startActivityForResult
+import com.google.mlkit.vision.barcode.BarcodeScanner
+import com.google.mlkit.vision.barcode.BarcodeScannerOptions
+import com.google.mlkit.vision.barcode.BarcodeScanning
+import com.google.mlkit.vision.barcode.common.Barcode
+import com.google.mlkit.vision.common.InputImage
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,6 +36,14 @@ class QRCodeFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    val options = BarcodeScannerOptions.Builder(
+    ).setBarcodeFormats(
+        Barcode.FORMAT_QR_CODE,
+        Barcode.FORMAT_AZTEC
+    ).build()
+
+    private val REQUEST_IMAGE_CAPTURE = 1
+    private var imageBitmap: Bitmap?= null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -33,8 +56,83 @@ class QRCodeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val viewRoot = inflater.inflate(R.layout.fragment_q_r_code, container, false)
+
+        val captureImage = viewRoot.findViewById<Button>(R.id.capture_image)
+        val textView = viewRoot.findViewById<TextView>(R.id.text_view)
+        val detectScan = viewRoot.findViewById<Button>(R.id.detect_scan)
+
+        captureImage.setOnClickListener {
+            takeImage()
+
+            textView.text=""
+        }
+
+        detectScan.setOnClickListener {
+            detectImage()
+        }
+
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_q_r_code, container, false)
+        return viewRoot
+    }
+
+    private fun detectImage() {
+       if (imageBitmap != null) {
+           val image = InputImage.fromBitmap(imageBitmap!!, 0)
+           val scanner = BarcodeScanning.getClient(options)
+
+           scanner.process(image)
+               .addOnSuccessListener { barcodes ->
+                   if (barcodes.toString() == "[]") {
+                       Toast.makeText(requireContext(), "Nothing to scan", Toast.LENGTH_SHORT).show()
+                   }
+
+                   for (barcode in barcodes) {
+                       val valueType = barcode.valueType
+
+                       when(valueType) {
+                           Barcode.TYPE_TEXT -> {
+                               val text = barcode.displayValue
+                               val textView = view?.findViewById<TextView>(R.id.text_view)
+                               textView?.text = text
+                           }
+                           else -> {
+                               Toast.makeText(requireContext(), "Nothing to scan", Toast.LENGTH_SHORT).show()
+                           }
+                       }
+                   }
+               }
+       }
+
+        else {
+            Toast.makeText(requireContext(), "Please select photo", Toast.LENGTH_SHORT).show()
+       }
+    }
+
+    private fun takeImage() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
+        try {
+            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            // Get the captured image as a bitmap
+            val imageBitmap = data?.extras?.get("data") as Bitmap?
+
+            if (imageBitmap != null) {
+                // Set the bitmap to the ImageView
+                val imageView = view?.findViewById<ImageView>(R.id.capture_image)
+                imageView?.setImageBitmap(imageBitmap)
+            }
+        }
     }
 
     companion object {
