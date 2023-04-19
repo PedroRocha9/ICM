@@ -17,7 +17,7 @@ class QRCodeToScan : AppCompatActivity() {
         val findPartner = findViewById<ImageView>(R.id.findPartner)
         val findBuddy = findViewById<ImageView>(R.id.findBuddy)
         profile.setOnClickListener {
-            goToActivity(Profile::class.java)
+            goToActivity(ProfileActivity::class.java)
         }
         lineup.setOnClickListener {
             goToActivity(Lineup::class.java)
