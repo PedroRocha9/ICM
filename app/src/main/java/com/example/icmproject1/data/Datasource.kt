@@ -1,124 +1,73 @@
 package com.example.icmproject1.data
 
 import android.content.Context
-import androidx.fragment.app.Fragment
 import com.example.icmproject1.R
 import com.example.icmproject1.model.Artist
 import com.example.icmproject1.model.Coordinates
 import com.example.icmproject1.model.FestivalEntry
 import com.example.icmproject1.model.Stage
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.tasks.await
 
 class Datasource(private val context: Context) {
     private val resources = context.resources
+    private val firestore = FirebaseFirestore.getInstance()
 
-    fun loadStages(day : Int): List<Stage> {
-        when (day) {
-            1 -> {
-                return listOf(Stage(
-                    resources.getStringArray(R.array.stages)[0],
-                    arrayOf(
-                        Artist(resources.getStringArray(R.array.artists)[0], "19:00"),
-                        Artist(resources.getStringArray(R.array.artists)[2], "21:00"),
-                        Artist(resources.getStringArray(R.array.artists)[4], "23:00"),
-                        Artist(resources.getStringArray(R.array.artists)[5], "00:00"),
-                        Artist(resources.getStringArray(R.array.artists)[8], "02:00"),
-                    )), Stage(
-                    resources.getStringArray(R.array.stages)[1],
-                    arrayOf(
-                        Artist(resources.getStringArray(R.array.artists)[1], "22:00"),
-                        Artist(resources.getStringArray(R.array.artists)[3], "00:00")
-                    ))
-                )
-            }
-            2 -> {
-                return listOf(Stage(
-                    resources.getStringArray(R.array.stages)[0],
-                    arrayOf(
-                        Artist(resources.getStringArray(R.array.artists)[0], "19:00"),
-                        Artist(resources.getStringArray(R.array.artists)[3], "23:00"),
-                        Artist(resources.getStringArray(R.array.artists)[2], "00:00"),
-                        Artist(resources.getStringArray(R.array.artists)[1], "01:00"),
-                    )), Stage(
-                    resources.getStringArray(R.array.stages)[1],
-                    arrayOf(
-                        Artist(resources.getStringArray(R.array.artists)[8], "21:00"),
-                        Artist(resources.getStringArray(R.array.artists)[4], "22:00"),
-                        Artist(resources.getStringArray(R.array.artists)[7], "00:00"),
-                        Artist(resources.getStringArray(R.array.artists)[6], "02:00"),
-                        Artist(resources.getStringArray(R.array.artists)[5], "02:00")
-                    ))
-                )
-            }
-            3 -> {
-                return listOf(Stage(
-                    resources.getStringArray(R.array.stages)[0],
-                    arrayOf(
-                        Artist(resources.getStringArray(R.array.artists)[8], "19:00"),
-                        Artist(resources.getStringArray(R.array.artists)[6], "21:00"),
-                    )), Stage(
-                    resources.getStringArray(R.array.stages)[1],
-                    arrayOf(
-                        Artist(resources.getStringArray(R.array.artists)[1], "22:00"),
-                        Artist(resources.getStringArray(R.array.artists)[3], "00:00"),
-                        Artist(resources.getStringArray(R.array.artists)[5], "01:00"),
-                        Artist(resources.getStringArray(R.array.artists)[4], "03:00")
-                    ))
-                )
-            }
-            4 -> {
-                return listOf(Stage(
-                    resources.getStringArray(R.array.stages)[0],
-                    arrayOf(
-                        Artist(resources.getStringArray(R.array.artists)[3], "17:00"),
-                        Artist(resources.getStringArray(R.array.artists)[8], "19:00"),
-                        Artist(resources.getStringArray(R.array.artists)[7], "21:00"),
-                        Artist(resources.getStringArray(R.array.artists)[2], "22:00"),
-                    )), Stage(
-                    resources.getStringArray(R.array.stages)[1],
-                    arrayOf(
-                        Artist(resources.getStringArray(R.array.artists)[6], "18:00"),
-                        Artist(resources.getStringArray(R.array.artists)[5], "20:00"),
-                        Artist(resources.getStringArray(R.array.artists)[7], "00:00"),
-                    ))
-                )
-            }
+    suspend fun loadStages(day: Int, festivalUID: String): List<Stage> {
+        val stagesList = mutableListOf<Stage>()
+        val festivalDoc = firestore.collection("festivals").document(festivalUID).get().await()
+        val days = festivalDoc.get("days") as List<Map<String, Any>>
+        val dayMap = days[day - 1]
+
+        for ((stageName, artistsData) in dayMap) {
+            val artists = (artistsData as List<Map<String, String>>).map { Artist(it["name"]!!, it["hour"]!!) }.toTypedArray()
+            stagesList.add(Stage(stageName, artists))
         }
-        return listOf()
+
+        return stagesList
     }
 
-    fun loadFestivalEntries(): List<FestivalEntry> {
-        val festivalNames = resources.getStringArray(R.array.festivals)
-        val festivalLocations = resources.getStringArray(R.array.locations)
-        val festivalCoordinates = resources.getStringArray(R.array.coordinates)
-        return festivalNames.mapIndexed { index, name ->
-            FestivalEntry(name, festivalLocations[index], Coordinates(festivalCoordinates[index].split(",")[0].toDouble(), festivalCoordinates[index].split(",")[1].toDouble()))
+    suspend fun loadFestivalEntries(): List<FestivalEntry> {
+        val festivalEntriesList = mutableListOf<FestivalEntry>()
+        val festivalsSnapshot = firestore.collection("festivals").get().await()
+
+        for (festivalDoc in festivalsSnapshot) {
+            val name = festivalDoc.getString("name")!!
+            val location = festivalDoc.getString("location")!!
+            val coordinates = festivalDoc.getGeoPoint("coordinates")!!
+            festivalEntriesList.add(FestivalEntry(name, location, Coordinates(coordinates.latitude, coordinates.longitude)))
         }
+
+        return festivalEntriesList
     }
 
-    fun getUserFestivals(username : String) : List<FestivalEntry> {
-        val userIndex = resources.getStringArray(R.array.users).indexOf(username)
-        if (userIndex == -1)
-            return listOf()
+    suspend fun getUserFestivals(username: String): List<FestivalEntry> {
+        val userFestivalsList = mutableListOf<FestivalEntry>()
+        val userDoc = firestore.collection("users").document(username).get().await()
+        val userFestivals = userDoc.get("festivals") as List<String>
 
-        val userFestivals = resources.getStringArray(R.array.users_festivals)[userIndex].split(",")
-        return userFestivals.map { festivalName ->
-            loadFestivalEntries().first { festivalEntry -> festivalEntry.name == festivalName }
+        for (festivalUID in userFestivals) {
+            val festivalDoc = firestore.collection("festivals").document(festivalUID).get().await()
+            val name = festivalDoc.getString("name")!!
+            val location = festivalDoc.getString("location")!!
+            val coordinates = festivalDoc.getGeoPoint("coordinates")!!
+            userFestivalsList.add(FestivalEntry(name, location, Coordinates(coordinates.latitude, coordinates.longitude)))
         }
-    }
-    fun getUserLocation(username : String) : Coordinates {
-        val userIndex = resources.getStringArray(R.array.users).indexOf(username)
-        if (userIndex == -1)
-            return Coordinates(0.0, 0.0)
 
-        val userCoordinates = resources.getStringArray(R.array.users_location)[userIndex].split(",")
-        return Coordinates(userCoordinates[0].toDouble(), userCoordinates[1].toDouble())
+        return userFestivalsList
     }
 
-    fun getUserBuddies(username : String) : List<String> {
-        val userIndex = resources.getStringArray(R.array.users).indexOf(username)
-        if (userIndex == -1)
-            return listOf()
+    suspend fun getUserLocation(username: String): Coordinates {
+        val userDoc = firestore.collection("users").document(username).get().await()
+        val coordinates = userDoc.getGeoPoint("location")!!
 
-        return resources.getStringArray(R.array.users_buddies)[userIndex].split(",")
+        return Coordinates(coordinates.latitude, coordinates.longitude)
+    }
+
+    suspend fun getUserBuddies(username: String): List<String> {
+        val userDoc = firestore.collection("users").document(username).get().await()
+        val userBuddies = userDoc.get("buddies") as List<String>
+
+        return userBuddies
     }
 }

@@ -15,11 +15,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import com.example.icmproject1.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import org.w3c.dom.Text
 
 class RegisterActivity : AppCompatActivity() {
         private var auth = FirebaseAuth.getInstance();
-        private var dbRef = FirebaseDatabase.getInstance().getReference("Users")
+        private val db = Firebase.firestore
         private lateinit var username : EditText
         private lateinit var email : EditText
         private lateinit var password : EditText
@@ -105,17 +107,22 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun saveUserToFirebaseDatabase() {
-        val userId = dbRef.push().key!!
-        val newUser = UserModel(userId, username.text.toString(), email.text.toString(), password.text.toString(), null, null, null, null, null)
+        // Create a new user with email, username and password
+        val newUserMap = hashMapOf(
+            "email" to email.text.toString(),
+            "username" to username.text.toString(),
+            "password" to password.text.toString()
+        )
 
-        dbRef.child(userId).setValue(newUser).addOnCompleteListener {
-            Log.e(TAG,"Ques qui se passe? Devia ter seguido")
-            Toast.makeText(this, "User saved successfully", Toast.LENGTH_SHORT).show()
-            Log.e(TAG, "User saved successfully")
-        }.addOnFailureListener{err ->
-            Toast.makeText(this, "Error ${err.message} while saving user", Toast.LENGTH_SHORT).show()
-            Log.e(TAG, "Error saving user")
-        }
+        val userId = auth.currentUser!!.uid
+
+        db.collection("users").document(userId).set(newUserMap)
+            .addOnSuccessListener {
+                Log.d(TAG, "DocumentSnapshot successfully written!")
+            }
+            .addOnFailureListener { e ->
+                Log.e(TAG, "Error writing document", e)
+            }
     }
 
     private val activityLauncher = registerForActivityResult(

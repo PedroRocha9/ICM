@@ -14,12 +14,14 @@ import com.example.icmproject1.adapter.OnItemClickListener
 import com.example.icmproject1.data.Datasource
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import org.w3c.dom.Text
 
 class AddFestivals : AppCompatActivity(), OnItemClickListener {
     private lateinit var chosenFestival : String
     private lateinit var chosenLocation : String
-    private lateinit var dbRef : DatabaseReference
+    private val db = Firebase.firestore
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_festivals)
@@ -32,8 +34,11 @@ class AddFestivals : AppCompatActivity(), OnItemClickListener {
 
         val choose = findViewById<Button>(R.id.choose)
         choose.setOnClickListener {
-            if (choose.isEnabled)
+            if (choose.isEnabled){
                 goToActivity(Lineup::class.java)
+                db.collection("users").document("user").update("festival", chosenFestival)
+                finish()
+            }
         }
     }
 

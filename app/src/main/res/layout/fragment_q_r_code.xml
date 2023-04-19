@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#2C2C2C"
-    tools:context=".Lineup">
+    android:background="#2C2C2C">
 
     <ImageView
         android:id="@+id/image_view"
@@ -14,9 +13,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="25dp">
-
-    </ImageView>
+        android:layout_marginTop="25dp" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -30,40 +27,34 @@
             android:id="@+id/text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:autoLink="all">
-
-        </TextView>
+            android:autoLink="all" />
 
     </ScrollView>
 
     <LinearLayout
         android:id="@+id/btn_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/capture_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="25dp"
-            android:text="CAPTURE">
-
-        </Button>
+            android:text="CAPTURE" />
 
         <Button
             android:id="@+id/detect_scan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="25dp"
-            android:text="SCAN">
-
-        </Button>
+            android:text="SCAN" />
 
     </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

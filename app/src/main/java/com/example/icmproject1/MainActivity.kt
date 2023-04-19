@@ -10,6 +10,8 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 import androidx.fragment.app.Fragment
+import com.google.firebase.firestore.ktx.firestore
+
 class MainActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
 
@@ -27,8 +29,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         // Check if user is signed in (non-null) and update UI accordingly.
         auth = Firebase.auth
-        var dbRef = FirebaseDatabase.getInstance().getReference("Festivals")
-        saveFestivalsData()
 
         // To register
         val register = findViewById<Button>(R.id.registerButtonMain)
@@ -41,11 +41,6 @@ class MainActivity : AppCompatActivity() {
         login.setOnClickListener {
             goToActivity(LoginActivity::class.java)
         }
-
-    }
-
-    // save festivals data (name, location) to firebase
-    private fun saveFestivalsData() {
 
     }
 
