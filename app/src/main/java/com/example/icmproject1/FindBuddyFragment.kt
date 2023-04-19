@@ -102,7 +102,7 @@ class FindBuddyFragment : Fragment() {
             } else {
                 setupMyLocation(googleMap)
             }
-
+/*
             val selectedFestival = Datasource(requireContext()).loadFestivalEntries()[0]
             val festival = LatLng(selectedFestival.coordinates.latitude, selectedFestival.coordinates.longitude)
             val icon = generateMarkerIcon(R.drawable.festival)
@@ -113,14 +113,14 @@ class FindBuddyFragment : Fragment() {
                     .title(selectedFestival.name)
                     .icon(icon)
             )
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(festival, 10F))
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(festival, 10F))*/
         })
 
         // add click listeners to map legend entries
         view.findViewById<View>(R.id.festival_location_legend).setOnClickListener {
-            val selectedFestival = Datasource(requireContext()).loadFestivalEntries()[0]
+           /* val selectedFestival = Datasource(requireContext()).loadFestivalEntries()[0]
             val festival = LatLng(selectedFestival.coordinates.latitude, selectedFestival.coordinates.longitude)
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(festival, 10F))
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(festival, 10F))*/
         }
         view.findViewById<View>(R.id.my_location_legend).setOnClickListener {
             useMyLocation { myLocation ->
@@ -139,7 +139,7 @@ class FindBuddyFragment : Fragment() {
         val inputFindBuddy = view.findViewById<EditText>(R.id.input_find_buddy)
         val findButton = view.findViewById<Button>(R.id.button_find)
         findButton.setOnClickListener {
-            buddyName = inputFindBuddy.text.toString()
+           /* buddyName = inputFindBuddy.text.toString()
             buddyLocation = Datasource(requireContext()).getUserLocation(buddyName)
             if (buddyLocation.latitude == 0.0 && buddyLocation.longitude == 0.0) {
                 Toast.makeText(context, "User not found", Toast.LENGTH_SHORT).show()
@@ -155,7 +155,7 @@ class FindBuddyFragment : Fragment() {
                         .icon(icon)
                 )
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(buddyLocation.latitude, buddyLocation.longitude), 10F))
-            }
+            }*/
         }
 
         return view

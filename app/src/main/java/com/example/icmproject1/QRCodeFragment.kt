@@ -1,184 +1,157 @@
 package com.example.icmproject1
 
-import android.content.ContentValues.TAG
+import android.app.Activity
+import android.app.Activity.RESULT_OK
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
-import androidx.camera.core.*
-import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
-import com.example.icmproject1.databinding.FragmentQRCodeBinding
-import com.google.mlkit.vision.barcode.Barcode
+import androidx.core.app.ActivityCompat.startActivityForResult
+import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
-import java.nio.file.Files.createFile
 
+// TODO: Rename parameter arguments, choose names that match
+// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+private const val ARG_PARAM1 = "param1"
+private const val ARG_PARAM2 = "param2"
+
+/**
+ * A simple [Fragment] subclass.
+ * Use the [QRCodeFragment.newInstance] factory method to
+ * create an instance of this fragment.
+ */
 class QRCodeFragment : Fragment() {
+    // TODO: Rename and change types of parameters
+    private var param1: String? = null
+    private var param2: String? = null
 
-    private var _binding: FragmentQRCodeBinding? = null
-    private val binding get() = _binding!!
-
-    private val options = BarcodeScannerOptions.Builder()
-        .setBarcodeFormats(
-            Barcode.FORMAT_QR_CODE,
-            Barcode.FORMAT_AZTEC
-        )
-        .build()
+    val options = BarcodeScannerOptions.Builder(
+    ).setBarcodeFormats(
+        Barcode.FORMAT_QR_CODE,
+        Barcode.FORMAT_AZTEC
+    ).build()
 
     private val REQUEST_IMAGE_CAPTURE = 1
-    private var imageBitmap: Bitmap? = null
+    private var imageBitmap: Bitmap?= null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            param1 = it.getString(ARG_PARAM1)
+            param2 = it.getString(ARG_PARAM2)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentQRCodeBinding.inflate(inflater, container, false)
-        val view = binding.root
+    ): View? {
+        val viewRoot = inflater.inflate(R.layout.fragment_q_r_code, container, false)
 
-        binding.captureImage.setOnClickListener {
+        val captureImage = viewRoot.findViewById<Button>(R.id.capture_image)
+        val textView = viewRoot.findViewById<TextView>(R.id.text_view)
+        val detectScan = viewRoot.findViewById<Button>(R.id.detect_scan)
+
+        captureImage.setOnClickListener {
             takeImage()
-            binding.textView.text = ""
+
+            textView.text=""
         }
 
-        binding.detectScan.setOnClickListener {
+        detectScan.setOnClickListener {
             detectImage()
         }
 
-        return view
+
+        // Inflate the layout for this fragment
+        return viewRoot
     }
 
-    private fun startCamera() {
-        val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
+    private fun detectImage() {
+        if (imageBitmap != null) {
+            val image = InputImage.fromBitmap(imageBitmap!!, 0)
+            val scanner = BarcodeScanning.getClient(options)
 
-        cameraProviderFuture.addListener(Runnable {
-            val cameraProvider = cameraProviderFuture.get()
+            scanner.process(image)
+                .addOnSuccessListener { barcodes ->
+                    if (barcodes.toString() == "[]") {
+                        Toast.makeText(requireContext(), "Nothing to scan", Toast.LENGTH_SHORT).show()
+                    }
 
-            val preview = Preview.Builder()
-                .build()
-                .also {
-                    it.setSurfaceProvider(binding.previewView.surfaceProvider)
-                }
-
-            val imageCapture = ImageCapture.Builder()
-                .build()
-
-            // Set up ImageAnalysis use case
-            val imageAnalyzer = ImageAnalysis.Builder()
-                .build()
-                .also {
-                    it.setAnalyzer(ContextCompat.getMainExecutor(requireContext()), ImageAnalysis.Analyzer { imageProxy ->
-                        // Pass the ImageProxy to the detectImage function
-                        detectImage(imageProxy)
-                    })
-                }
-
-            val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
-
-            try {
-                cameraProvider.unbindAll()
-
-                cameraProvider.bindToLifecycle(
-                    viewLifecycleOwner, cameraSelector, preview, imageCapture, imageAnalyzer
-                )
-            } catch (exc: Exception) {
-                Log.e(TAG, "Use case binding failed", exc)
-            }
-
-        }, ContextCompat.getMainExecutor(requireContext()))
-    }
-
-
-    private fun detectImage(imageProxy: ImageProxy) {
-        val inputImage = InputImage.fromMediaImage(imageProxy.image!!, imageProxy.imageInfo.rotationDegrees)
-        val scanner = BarcodeScanning.getClient()
-
-        scanner.process(inputImage)
-            .addOnSuccessListener { barcodes ->
-                if (barcodes.isEmpty()) {
-                    Toast.makeText(requireContext(), "No QR code detected", Toast.LENGTH_SHORT).show()
-                } else {
                     for (barcode in barcodes) {
                         val valueType = barcode.valueType
 
-                        when (valueType) {
+                        when(valueType) {
                             Barcode.TYPE_TEXT -> {
                                 val text = barcode.displayValue
-                                binding.textView.text = text
+                                val textView = view?.findViewById<TextView>(R.id.text_view)
+                                textView?.text = text
                             }
                             else -> {
-                                Toast.makeText(requireContext(), "Unsupported QR code type", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(requireContext(), "Nothing to scan", Toast.LENGTH_SHORT).show()
                             }
                         }
                     }
                 }
-            }
-            .addOnFailureListener {
-                Toast.makeText(requireContext(), "QR code detection failed", Toast.LENGTH_SHORT).show()
-            }
+        }
+
+        else {
+            Toast.makeText(requireContext(), "Please select photo", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun takeImage() {
-        // Check if the ImageCapture use case is not null
-        imageCapture?.let { imageCapture ->
-            // Create a file to save the captured image
-            val photoFile = createFile(requireContext())
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
-            // Set up output options
-            val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
-
-            // Take a picture and save it to the provided file
-            imageCapture.takePicture(
-                outputOptions, ContextCompat.getMainExecutor(requireContext()), object : ImageCapture.OnImageSavedCallback {
-                    override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                        val savedUri = Uri.fromFile(photoFile)
-                        val msg = "Photo capture succeeded: $savedUri"
-                        Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
-                        Log.d(TAG, msg)
-                    }
-
-                    override fun onError(exception: ImageCaptureException) {
-                        Log.e(TAG, "Photo capture failed: ${exception.message}", exception)
-                    }
-                })
+        try {
+            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        when (requestCode) {
-            REQUEST_CAMERA_PERMISSION -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    startCamera()
-                } else {
-                    Toast.makeText(requireContext(), "Camera permission denied", Toast.LENGTH_SHORT).show()
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            // Get the captured image as a bitmap
+            val imageBitmap = data?.extras?.get("data") as Bitmap?
+
+            if (imageBitmap != null) {
+                // Set the bitmap to the ImageView
+                val imageView = view?.findViewById<ImageView>(R.id.capture_image)
+                imageView?.setImageBitmap(imageBitmap)
+            }
+        }
+    }
+
+    companion object {
+        /**
+         * Use this factory method to create a new instance of
+         * this fragment using the provided parameters.
+         *
+         * @param param1 Parameter 1.
+         * @param param2 Parameter 2.
+         * @return A new instance of fragment QRCodeFragment.
+         */
+        // TODO: Rename and change types and number of parameters
+        @JvmStatic
+        fun newInstance(param1: String, param2: String) =
+            QRCodeFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_PARAM1, param1)
+                    putString(ARG_PARAM2, param2)
                 }
             }
-            else -> {
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-            }
-        }
-    }
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        // Your existing onActivityResult code
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }
-

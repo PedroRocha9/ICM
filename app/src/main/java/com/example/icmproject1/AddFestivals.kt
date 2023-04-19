@@ -16,23 +16,40 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.w3c.dom.Text
 
 class AddFestivals : AppCompatActivity(), OnItemClickListener {
     private lateinit var chosenFestival : String
     private lateinit var chosenLocation : String
     private val db = Firebase.firestore
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_festivals)
 
-        val festivalEntriesData = Datasource(this).loadFestivalEntries()
-
         val recyclerView = findViewById<RecyclerView>(R.id.festival_list)
-        recyclerView.adapter = FestivalEntryAdapter(festivalEntriesData, this)
         recyclerView.setHasFixedSize(true)
 
         val choose = findViewById<Button>(R.id.choose)
+        choose.isEnabled = false
+
+        val coroutineScope = CoroutineScope(Dispatchers.Main)
+
+        Log.e("AddFestivals", "onCreate:")
+
+        coroutineScope.launch {
+            Log.e("AddFestivals", "launch:")
+            val festivalEntriesData = withContext(Dispatchers.IO) {
+                Datasource(this@AddFestivals).loadFestivalEntries()
+            }
+            recyclerView.adapter = FestivalEntryAdapter(festivalEntriesData, this@AddFestivals)
+            choose.isEnabled = true
+        }
+
         choose.setOnClickListener {
             if (choose.isEnabled){
                 goToActivity(Lineup::class.java)
@@ -41,6 +58,7 @@ class AddFestivals : AppCompatActivity(), OnItemClickListener {
             }
         }
     }
+
 
     private val activityLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()

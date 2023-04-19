@@ -1,6 +1,7 @@
 package com.example.icmproject1.data
 
 import android.content.Context
+import android.util.Log
 import com.example.icmproject1.R
 import com.example.icmproject1.model.Artist
 import com.example.icmproject1.model.Coordinates
@@ -17,12 +18,21 @@ class Datasource(private val context: Context) {
         val stagesList = mutableListOf<Stage>()
         val festivalDoc = firestore.collection("festivals").document(festivalUID).get().await()
         val days = festivalDoc.get("days") as List<Map<String, Any>>
-        val dayMap = days[day - 1]
 
-        for ((stageName, artistsData) in dayMap) {
-            val artists = (artistsData as List<Map<String, String>>).map { Artist(it["name"]!!, it["hour"]!!) }.toTypedArray()
-            stagesList.add(Stage(stageName, artists))
-        }
+        val dayMap = days[day - 1]
+        val mainStageMap = dayMap["mainStage"] as Map<String, List<String>>
+        val secondaryStageMap = dayMap["secondaryStage"] as Map<String, List<String>>
+
+        val mainStageArtists = mainStageMap["artists"]!!
+        val mainStageHours = mainStageMap["hours"]!!
+        val mainStage = mainStageArtists.zip(mainStageHours).map { Artist(it.first, it.second) }.toTypedArray()
+
+        val secondaryStageArtists = secondaryStageMap["artists"]!!
+        val secondaryStageHours = secondaryStageMap["hours"]!!
+        val secondaryStage = secondaryStageArtists.zip(secondaryStageHours).map { Artist(it.first, it.second) }.toTypedArray()
+
+        stagesList.add(Stage("Main Stage", mainStage))
+        stagesList.add(Stage("Secondary Stage", secondaryStage))
 
         return stagesList
     }
@@ -31,12 +41,17 @@ class Datasource(private val context: Context) {
         val festivalEntriesList = mutableListOf<FestivalEntry>()
         val festivalsSnapshot = firestore.collection("festivals").get().await()
 
+        Log.e("FESTIVALS", "HEREEEEEE")
+
         for (festivalDoc in festivalsSnapshot) {
             val name = festivalDoc.getString("name")!!
+            Log.e("FESTIVALS", name)
             val location = festivalDoc.getString("location")!!
-            val coordinates = festivalDoc.getGeoPoint("coordinates")!!
+            val coordinates = festivalDoc.getGeoPoint("coords")!!
             festivalEntriesList.add(FestivalEntry(name, location, Coordinates(coordinates.latitude, coordinates.longitude)))
         }
+
+        Log.e("FESTIVALS", festivalEntriesList.toString())
 
         return festivalEntriesList
     }
@@ -50,7 +65,7 @@ class Datasource(private val context: Context) {
             val festivalDoc = firestore.collection("festivals").document(festivalUID).get().await()
             val name = festivalDoc.getString("name")!!
             val location = festivalDoc.getString("location")!!
-            val coordinates = festivalDoc.getGeoPoint("coordinates")!!
+            val coordinates = festivalDoc.getGeoPoint("coords")!!
             userFestivalsList.add(FestivalEntry(name, location, Coordinates(coordinates.latitude, coordinates.longitude)))
         }
 

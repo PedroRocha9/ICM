@@ -13,6 +13,10 @@ import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
 import com.example.icmproject1.adapter.ArtistAdapter
 import com.example.icmproject1.data.Datasource
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -27,7 +31,7 @@ class LineupFragment() : Fragment() {
     // TODO: Rename and change types of parameters
     private var nStages = 2
     private var day: Int = 1
-
+    private var festivalUID : String = "Mso42n0MeMOZmKrKLfgQ"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -71,18 +75,20 @@ class LineupFragment() : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         // Load data for all stages
-        val day1 = Datasource(requireContext()).loadStages(day)
+        val coroutineScope = CoroutineScope(Dispatchers.Main)
 
-        // Get a reference to the RecyclerView in each StageFragment and set its adapter
-        for (i in 0 until nStages) {
-            val stage = childFragmentManager.findFragmentByTag("stage$i") as StageFragment
-            val view = stage.rootView
+        coroutineScope.launch {
+            val day = Datasource(requireContext()).loadStages(day, festivalUID)
+            for (i in 0 until nStages) {
+                val stage = childFragmentManager.findFragmentByTag("stage$i") as StageFragment
+                val view = stage.rootView
 
-            val stageData = day1[i]
-            view?.findViewById<TextView>(R.id.stage_name)?.text = stageData.stageName
-            val recyclerView = view?.findViewById<RecyclerView>(R.id.recycler_view)
-            recyclerView?.adapter = ArtistAdapter(stageData.artists)
-            recyclerView?.setHasFixedSize(true)
+                val stageData = day[i]
+                view?.findViewById<TextView>(R.id.stage_name)?.text = stageData.stageName
+                val recyclerView = view?.findViewById<RecyclerView>(R.id.recycler_view)
+                recyclerView?.adapter = ArtistAdapter(stageData.artists)
+                recyclerView?.setHasFixedSize(true)
+            }
         }
     }
 

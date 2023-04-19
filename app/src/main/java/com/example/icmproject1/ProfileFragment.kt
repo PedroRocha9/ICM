@@ -40,7 +40,7 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_profile, container, false)
-
+/*
         // update nickname and email placeholders
         rootView.findViewById<TextView>(R.id.nickname_edit_text).hint = nickname
         rootView.findViewById<TextView>(R.id.email_edit_text).hint = email
@@ -54,7 +54,7 @@ class ProfileFragment : Fragment() {
         val buddiesRecyclerView = rootView.findViewById<RecyclerView>(R.id.buddies_list)
         buddiesRecyclerView.adapter = StringListAdapter(buddiesData)
         buddiesRecyclerView.setHasFixedSize(true)
-
+*/
         // Inflate the layout for this fragment
         return rootView
     }
