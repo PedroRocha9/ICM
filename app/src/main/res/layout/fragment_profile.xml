@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/profile_image"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@drawable/user_white" />
+
+        <EditText
+            android:id="@+id/nickname_edit_text"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/profile_image"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:hint="Nickname"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/email_edit_text"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/nickname_edit_text"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:hint="Email"
+            android:inputType="textEmailAddress" />
+
+        <TextView
+            android:id="@+id/festival_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/email_edit_text"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:text="List of Ur Festivals"
+            android:textSize="24sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/festival_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/festival_title"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            app:layoutManager="LinearLayoutManager"/>
+
+        <Button
+            android:id="@+id/add_festival_button"
+            android:layout_width="250dp"
+            android:background="@color/main"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/festival_list"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="Add Festival"/>
+
+        <TextView
+            android:id="@+id/buddies_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/add_festival_button"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="48dp"
+            android:text="List of Ur Buddies"
+            android:textSize="24sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/buddies_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/buddies_title"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            app:layoutManager="LinearLayoutManager"/>
+
+    </RelativeLayout>
+</ScrollView>

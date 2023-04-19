@@ -7,285 +7,57 @@
     android:background="#2C2C2C"
     tools:context=".Lineup">
 
-    <TextView
-        android:id="@+id/urProfile"
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/main"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/toolbarTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Profile"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:layout_gravity="start|center_vertical" />
+
+        <ImageView
+            android:id="@+id/logOut"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_gravity="end|center_vertical"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/logout_white"
+            tools:layout_editor_absoluteX="352dp"
+            tools:layout_editor_absoluteY="5dp" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/fragment_container"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topBar" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/main"
-        android:padding="10dp"
-        android:text="Ur Profile"
-        android:textColor="#FFFFFF"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/logOut"
-        android:layout_width="75dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="336dp"
-        android:backgroundTint="#2A7C52"
-        android:padding="5dp"
-        android:text="Log Out"
-        android:textColor="#FFFFFF"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="@+id/urProfile"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/urProfile"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/user_white" />
-
-    <LinearLayout
-        android:id="@+id/bottom_menu"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:background="@color/main"
-        android:orientation="horizontal"
-        android:padding="10dp"
+        app:itemIconTint="@color/white"
+        app:itemTextColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <ImageView
-            android:id="@+id/lineup"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/microphone_white" />
-
-        <ImageView
-            android:id="@+id/findBuddy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/map_white" />
-
-        <ImageView
-            android:id="@+id/qrcode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/qr_code_white" />
-
-        <ImageView
-            android:id="@+id/findPartner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/tongue_out_white" />
-
-    </LinearLayout>
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:paddingLeft="25dp"
-        android:paddingTop="25dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/urProfile"
-        tools:srcCompat="@drawable/mw_1280" />
-
-    <ImageView
-        android:id="@+id/profileSettings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:paddingRight="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/urProfile"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
-
-    <EditText
-        android:id="@+id/nickname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/text"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:singleLine="true"
-        android:text="Nickname"
-        android:textColor="@color/text"
-        android:textColorHint="@color/text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView2"
-        app:layout_constraintTop_toBottomOf="@+id/profileSettings" />
-
-    <EditText
-        android:id="@+id/editTextTextPersonName2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/text"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:maxLines="4"
-        android:text="Biography"
-        android:textColor="@color/text"
-        android:textColorHint="@color/text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView2"
-        app:layout_constraintTop_toBottomOf="@+id/nickname" />
-
-    <EditText
-        android:id="@+id/editTextTextEmailAddress2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="21dp"
-        android:layout_marginTop="8dp"
-        android:width="350dp"
-        android:backgroundTint="@color/text"
-        android:ems="10"
-        android:inputType="textEmailAddress"
-        android:maxLines="1"
-        android:text="Email"
-        android:textColor="@color/text"
-        android:textColorHint="@color/text"
-        app:layout_constraintEnd_toStartOf="@+id/profileSettings"
-        app:layout_constraintStart_toStartOf="@+id/imageView2"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
-
-    <EditText
-        android:id="@+id/editTextTextPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:width="350dp"
-        android:backgroundTint="@color/text"
-        android:ems="10"
-        android:inputType="textPassword"
-        android:text="password"
-        android:textColor="@color/text"
-        android:textColorHint="@color/text"
-        app:layout_constraintEnd_toEndOf="@+id/editTextTextEmailAddress2"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/editTextTextEmailAddress2"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress2" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="350dp"
-        android:layout_height="160dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="@+id/editTextTextPassword"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/editTextTextPassword"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword">
-
-        <TextView
-            android:id="@+id/textView18"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="List of Ur Festivals"
-            android:textColor="@color/text"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/festival1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Meo Sudoeste"
-            android:textColor="@color/text"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/festival2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Vodafone Paredes de Coura"
-            android:textColor="@color/text"
-            android:textSize="18sp" />
-
-        <Button
-            android:id="@+id/addFestival"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/main_darker"
-            android:text="Add another Festival"
-            android:textColor="@color/text" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/listOfBuddiesHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="List of Ur Buddies"
-        android:textColor="@color/text"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout2"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
-
-    <TextView
-        android:id="@+id/textView27"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:text="DiogoPowerLol"
-        android:textColor="@color/text"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_menu"
-        app:layout_constraintStart_toStartOf="@+id/textView29"
-        app:layout_constraintTop_toBottomOf="@+id/textView29" />
-
-    <ImageView
-        android:id="@+id/imageView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="@+id/textView27"
-        app:layout_constraintStart_toEndOf="@+id/textView27"
-        app:layout_constraintTop_toTopOf="@+id/textView27"
-        app:srcCompat="@drawable/icons8_ok_24" />
-
-    <ImageView
-        android:id="@+id/imageView9"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView5"
-        app:layout_constraintStart_toEndOf="@+id/imageView5"
-        app:layout_constraintTop_toTopOf="@+id/imageView5"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/icons8_cross_mark_48" />
-
-    <TextView
-        android:id="@+id/textView28"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:text="Fernando Mendes"
-        android:textColor="@color/text"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/listOfBuddiesHeader"
-        app:layout_constraintTop_toBottomOf="@+id/listOfBuddiesHeader" />
-
-    <TextView
-        android:id="@+id/textView29"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Ur Buddy requests"
-        android:textColor="@color/text"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/textView28"
-        tools:layout_editor_absoluteX="21dp" />
-
-    <TextView
-        android:id="@+id/textView30"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="Remove friend"
-        android:clickable="true"
-        android:textColor="@android:color/holo_red_light"
-        app:layout_constraintBottom_toBottomOf="@+id/textView28"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout2"
-        app:layout_constraintStart_toEndOf="@+id/textView28"
-        app:layout_constraintTop_toTopOf="@+id/textView28" />
+        app:menu="@menu/bottom_navb_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,8 +8,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import kotlin.math.log
-
+import androidx.fragment.app.Fragment
 class MainActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
 
@@ -48,8 +47,9 @@ class MainActivity : AppCompatActivity() {
         // if returning to this activity, send to lineUp
     }
 
-    private fun goToActivity(activity: Class<*>) {
+    private fun goToActivity(activity: Class<*>, fragmentName: String = "lineup") {
         val intent = Intent(this, activity)
+        intent.putExtra("fragment", fragmentName)
         activityLauncher.launch(intent)
     }
 }

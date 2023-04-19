@@ -28,6 +28,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 
 // TODO: Rename parameter arguments, choose names that match
@@ -48,6 +49,7 @@ class FindBuddyFragment : Fragment() {
     lateinit var googleMap: GoogleMap
     private var buddyName = "";
     private var buddyLocation = Coordinates(0.0, 0.0)
+    private var buddyMarker : Marker? = null
 
     @SuppressLint("MissingPermission")
     private val requestPermissionLauncher = registerForActivityResult(
@@ -142,8 +144,11 @@ class FindBuddyFragment : Fragment() {
             if (buddyLocation.latitude == 0.0 && buddyLocation.longitude == 0.0) {
                 Toast.makeText(context, "User not found", Toast.LENGTH_SHORT).show()
             } else {
+                // remove old marker
+                buddyMarker?.remove()
+
                 val icon = generateMarkerIcon(R.drawable.friend_location)
-                googleMap.addMarker(
+                buddyMarker = googleMap.addMarker(
                     MarkerOptions()
                         .position(LatLng(buddyLocation.latitude, buddyLocation.longitude))
                         .title(buddyName)

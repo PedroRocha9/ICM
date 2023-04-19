@@ -6,33 +6,43 @@ import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.example.icmproject1.databinding.ActivityLineupBinding
-import com.example.icmproject1.databinding.ActivityMainBinding
 
 class Lineup : AppCompatActivity() {
     private lateinit var binding: ActivityLineupBinding
+    private var frag : Fragment = LineupFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLineupBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        replaceFragment(LineupFragment())
+
+        frag = when (intent.getStringExtra("fragment") ?: "lineup") {
+            "lineup" -> LineupFragment()
+            "qrcode" -> QRCodeFragment()
+            "findBuddy" -> FindBuddyFragment()
+            else -> LineupFragment()
+        }
+        replaceFragment(frag)
 
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.lineup -> {
-                    replaceFragment(LineupFragment())
+                    frag = LineupFragment()
                     true
                 }
                 R.id.qrcode -> {
-                    replaceFragment(QRCodeFragment())
+                    frag = QRCodeFragment()
                     true
                 }
                 R.id.findBuddy -> {
-                    replaceFragment(FindBuddyFragment())
+                    frag = FindBuddyFragment()
                     true
                 }
                 else -> false
             }
+            replaceFragment(frag)
+
+            return@setOnItemSelectedListener true
         }
 
         binding.userIcon.setOnClickListener {
@@ -45,6 +55,15 @@ class Lineup : AppCompatActivity() {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.fragment_container, fragment)
         fragmentTransaction.commit()
+
+        // update top section title
+        val title = when (fragment) {
+            is LineupFragment -> "Lineup"
+            is QRCodeFragment -> "QR Code"
+            is FindBuddyFragment -> "Find Buddy"
+            else -> "Lineup"
+        }
+        binding.toolbarTitle.text = title
     }
 
     private val activityLauncher = registerForActivityResult(

@@ -7,29 +7,6 @@
     android:background="#2C2C2C"
     tools:context=".Lineup">
 
-    <TextView
-        android:id="@+id/page_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/main"
-        android:padding="10dp"
-        android:text="QR Codes"
-        android:textColor="#FFFFFF"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/profile"
-        android:layout_width="75dp"
-        android:layout_height="0dp"
-        android:padding="5dp"
-        app:layout_constraintBottom_toBottomOf="@+id/page_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/page_title"
-        app:srcCompat="@drawable/user_white" />
-
     <Button
         android:id="@+id/showQRCode"
         android:layout_width="250dp"
@@ -42,8 +19,7 @@
         android:textSize="48sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/page_title" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView19"

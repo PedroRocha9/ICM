@@ -95,6 +95,16 @@ class Datasource(private val context: Context) {
         }
     }
 
+    fun getUserFestivals(username : String) : List<FestivalEntry> {
+        val userIndex = resources.getStringArray(R.array.users).indexOf(username)
+        if (userIndex == -1)
+            return listOf()
+
+        val userFestivals = resources.getStringArray(R.array.users_festivals)[userIndex].split(",")
+        return userFestivals.map { festivalName ->
+            loadFestivalEntries().first { festivalEntry -> festivalEntry.name == festivalName }
+        }
+    }
     fun getUserLocation(username : String) : Coordinates {
         val userIndex = resources.getStringArray(R.array.users).indexOf(username)
         if (userIndex == -1)
@@ -102,5 +112,13 @@ class Datasource(private val context: Context) {
 
         val userCoordinates = resources.getStringArray(R.array.users_location)[userIndex].split(",")
         return Coordinates(userCoordinates[0].toDouble(), userCoordinates[1].toDouble())
+    }
+
+    fun getUserBuddies(username : String) : List<String> {
+        val userIndex = resources.getStringArray(R.array.users).indexOf(username)
+        if (userIndex == -1)
+            return listOf()
+
+        return resources.getStringArray(R.array.users_buddies)[userIndex].split(",")
     }
 }
